@@ -1,7 +1,7 @@
 {
   "version": 2,
   "functions": {
-    "server.js": {
+    "api/index.js": {
       "includeFiles": [
         "database.json",
         "service_detail_template.html"
@@ -11,15 +11,15 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "/server.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/services/:path*",
-      "destination": "/server.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/uploads/:path*",
-      "destination": "/server.js"
+      "destination": "/api/index.js"
     }
   ]
 }
