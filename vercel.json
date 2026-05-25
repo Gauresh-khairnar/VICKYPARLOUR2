@@ -6,44 +6,17 @@
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
+          "public/**",
           "database.json",
           "service_detail_template.html"
         ]
       }
-    },
-    {
-      "src": "public/**/*",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/(.*)",
       "dest": "api/index.js"
-    },
-    {
-      "src": "/services/(.*)",
-      "dest": "api/index.js"
-    },
-    {
-      "src": "/uploads/(.*)",
-      "dest": "api/index.js"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "public/assets/$1"
-    },
-    {
-      "src": "/(style.css|scroll_styles.css|bg_atmosphere.css|script.js|robots.txt|sitemap.xml)",
-      "dest": "public/$1"
-    },
-    {
-      "src": "/(index|about|services|academy|gallery|contact)(.html)?",
-      "dest": "public/$1.html"
-    },
-    {
-      "src": "/",
-      "dest": "public/index.html"
     }
   ]
 }

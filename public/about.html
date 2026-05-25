@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +14,9 @@
     <meta property="og:description" content="Discover the legacy of Vicky Parlour in Chalisgaon. Built on boldness, our salon and academy represent the gold standard of luxury beauty training.">
     <meta property="og:image" content="https://vickyparlour.com/assets/logo.png">
 
-    <link rel="stylesheet" href="style.css">
+        <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -59,6 +61,22 @@
         </ul>
         <a href="contact.html" class="btn-bold magnetic" style="padding: 10px 20px; font-size: 12px;">BOOK NOW</a>
     </nav>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav" id="mobile-nav" role="dialog" aria-label="Mobile navigation">
+        <ul>
+            <li><a href="index.html" onclick="closeMobileNav()">HOME</a></li>
+            <li><a href="about.html" onclick="closeMobileNav()">LEGACY</a></li>
+            <li><a href="services.html" onclick="closeMobileNav()">SERVICES</a></li>
+            <li><a href="academy.html" onclick="closeMobileNav()">ACADEMY</a></li>
+            <li><a href="gallery.html" onclick="closeMobileNav()">GALLERY</a></li>
+            <li><a href="contact.html" onclick="closeMobileNav()">CONTACT</a></li>
+        </ul>
+        <a href="contact.html" class="btn-bold glow-button mobile-book-btn">BOOK NOW</a>
+    </div>
 
     <header id="hero" style="min-height: 50vh; padding-top: 150px;">
         <h1 class="hero-title split-text-reveal glow-text-white">OUR STORY.</h1>
@@ -128,5 +146,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Mobile Nav
+        function closeMobileNav() {
+            document.getElementById('mobile-nav').classList.remove('open');
+            document.getElementById('hamburger').classList.remove('active');
+            document.getElementById('hamburger').setAttribute('aria-expanded','false');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('hamburger').addEventListener('click', function() {
+            var open = this.classList.toggle('active');
+            this.setAttribute('aria-expanded', open);
+            document.getElementById('mobile-nav').classList.toggle('open', open);
+            document.body.style.overflow = open ? 'hidden' : '';
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeMobileNav();
+        });
+    </script>
 </body>
 </html>

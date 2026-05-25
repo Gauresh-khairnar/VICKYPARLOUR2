@@ -21,6 +21,9 @@
     <meta property="twitter:description" content="Premium salon services, architectural haircuts, metallic chrome coloring, bridal couture, advanced skin reboots, and accredited academy training.">
     <meta property="twitter:image" content="https://vickyparlour.com/assets/logo.png">
 
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -72,7 +75,22 @@
         <div class="nav-cta">
             <a href="contact.html" class="btn-bold magnetic">BOOK NOW</a>
         </div>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
     </nav>
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav" id="mobile-nav" role="dialog" aria-label="Mobile navigation">
+        <ul>
+            <li><a href="index.html" onclick="closeMobileNav()">HOME</a></li>
+            <li><a href="about.html" onclick="closeMobileNav()">LEGACY</a></li>
+            <li><a href="services.html" onclick="closeMobileNav()">SERVICES</a></li>
+            <li><a href="academy.html" onclick="closeMobileNav()">ACADEMY</a></li>
+            <li><a href="gallery.html" onclick="closeMobileNav()">GALLERY</a></li>
+            <li><a href="contact.html" onclick="closeMobileNav()">CONTACT</a></li>
+        </ul>
+        <a href="contact.html" class="btn-bold glow-button mobile-book-btn">BOOK NOW</a>
+    </div>
 
     <!-- Cinematic Multiverse Hero -->
     <header id="hero">
@@ -234,7 +252,7 @@
         </div>
         <div class="booking-container glass-panel magnetic" style="max-width: 800px; margin: 0 auto; padding: 60px;">
             <form id="appointment-form" class="booking-form">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div class="booking-grid">
                     <div class="input-group" style="display: flex; flex-direction: column; gap: 10px;">
                         <label style="font-weight: 800; font-size: 10px; letter-spacing: 2px;">FULL NAME</label>
                         <input type="text" id="name" name="name" placeholder="YOUR NAME" required style="background: transparent; border: 1px solid var(--glass-border); padding: 15px; color: #fff; font-family: inherit;">
@@ -363,5 +381,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Mobile Nav
+        function closeMobileNav() {
+            document.getElementById('mobile-nav').classList.remove('open');
+            document.getElementById('hamburger').classList.remove('active');
+            document.getElementById('hamburger').setAttribute('aria-expanded','false');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('hamburger').addEventListener('click', function() {
+            var open = this.classList.toggle('active');
+            this.setAttribute('aria-expanded', open);
+            document.getElementById('mobile-nav').classList.toggle('open', open);
+            document.body.style.overflow = open ? 'hidden' : '';
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeMobileNav();
+        });
+    </script>
 </body>
 </html>
