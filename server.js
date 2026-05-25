@@ -67,38 +67,75 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Database File Path
 const DB_FILE = path.join(__dirname, 'database.json');
 
+// In-memory DB fallback for read-only environments like Vercel
+let _memoryDB = null;
+const IS_READONLY = process.env.VERCEL ? true : false;
+
 function getDB() {
+    // If we have an in-memory DB (Vercel read-only mode), use it
+    if (_memoryDB) return JSON.parse(JSON.stringify(_memoryDB));
+    
     if (!fs.existsSync(DB_FILE)) {
         initializeDB();
-    }
-    const db = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
-    if (!db.admin) {
-        const { salt, hash } = hashPassword('vicky');
-        db.admin = {
-            username: 'vicky',
-            passwordSalt: salt,
-            passwordHash: hash,
-            recoveryEmail: 'admin@vickyparlour.com',
-            authProtection: false,
-            sessions: [],
-            loginActivity: []
-        };
-        try {
-            fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), 'utf8');
-        } catch (err) {
-            console.warn('[DB] Failed to seed admin account to disk:', err.message);
+        // If file still doesn't exist (read-only), return default
+        if (!fs.existsSync(DB_FILE)) {
+            if (!_memoryDB) {
+                _memoryDB = buildDefaultDB();
+            }
+            return JSON.parse(JSON.stringify(_memoryDB));
         }
     }
-    return db;
+    try {
+        const db = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+        if (!db.admin) {
+            const { salt, hash } = hashPassword('vicky');
+            db.admin = {
+                username: 'vicky',
+                passwordSalt: salt,
+                passwordHash: hash,
+                recoveryEmail: 'admin@vickyparlour.com',
+                authProtection: false,
+                sessions: [],
+                loginActivity: []
+            };
+            try {
+                fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), 'utf8');
+            } catch (err) {
+                // Read-only filesystem — cache in memory
+                _memoryDB = db;
+                console.warn('[DB] Read-only filesystem detected, using in-memory storage.');
+            }
+        }
+        return db;
+    } catch (err) {
+        console.error('[DB] Failed to read database file:', err.message);
+        if (!_memoryDB) _memoryDB = buildDefaultDB();
+        return JSON.parse(JSON.stringify(_memoryDB));
+    }
 }
 
 // Save DB state
 function saveDB(data) {
+    // Always update memory mirror
+    _memoryDB = JSON.parse(JSON.stringify(data));
     try {
         fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf8');
     } catch (err) {
-        console.warn('[DB] Failed to save database to disk:', err.message);
+        // Read-only filesystem (e.g. Vercel) — data persists in memory for this request lifecycle
+        console.warn('[DB] Write skipped (read-only fs). Changes held in memory:', err.code);
     }
+}
+
+// Build default DB structure without writing to disk
+function buildDefaultDB() {
+    const { salt, hash } = hashPassword('vicky');
+    return {
+        hero: { title_line1: 'BOLD', title_line2: 'BEAUTY', title_line3: 'LEVEL.', subtitle: 'PREMIUM SALON • ADVANCED ACADEMY • BRIDAL STUDIO • CHALISGAON' },
+        contact: { phone: '+91 98765 43210', email: 'HELLO@VICKYPARLOUR.COM', address: 'CHALISGAON, MAHARASHTRA', hours: 'MON - SUN: 10:00 AM - 09:00 PM' },
+        services: [], gallery: [], testimonials: [], team: [], faqs: [], pricing: [], blogs: [],
+        bookings: [], inquiries: [], configs: {}, invoices: [],
+        admin: { username: 'vicky', passwordSalt: salt, passwordHash: hash, recoveryEmail: 'admin@vickyparlour.com', authProtection: false, sessions: [], loginActivity: [] }
+    };
 }
 
 // ================= HYBRID FIREBASE AND SMTP EMAIL ENGINES =================

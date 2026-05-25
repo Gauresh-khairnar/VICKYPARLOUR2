@@ -1,8 +1,9 @@
 # Dependencies
 node_modules/
 
-# Local databases and states
-database.json
+# Environment variables (never commit secrets)
+.env
+.env.*
 
 # User uploads and generated PDFs
 uploads/
