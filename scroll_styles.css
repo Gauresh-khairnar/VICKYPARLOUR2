@@ -1,0 +1,88 @@
+/* Cinematic Scroll & Reveal Universe */
+.reveal-blur {
+    filter: blur(20px);
+    opacity: 0;
+    transition: filter 1.5s ease, opacity 1.5s ease;
+}
+.reveal-blur.active {
+    filter: blur(0);
+    opacity: 1;
+}
+
+.scroll-progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 1001;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.scroll-progress-bar {
+    height: 100%;
+    background: var(--gold);
+    width: 0%;
+    box-shadow: var(--gold-glow);
+}
+
+/* Horizontal Scroll Gallery Universe */
+.horizontal-gallery-wrapper {
+    overflow: hidden;
+    background: #050505;
+    padding: 100px 0;
+}
+
+.horizontal-scroll-container {
+    display: flex;
+    gap: 40px;
+    padding: 0 10%;
+    width: fit-content;
+}
+
+.gallery-item-cinematic {
+    width: 500px;
+    height: 700px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.gallery-item-cinematic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.gallery-item-cinematic:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    transform: translateY(100%);
+    transition: var(--transition);
+}
+
+.gallery-item-cinematic:hover .gallery-overlay {
+    transform: translateY(0);
+}
+
+/* Word Reveal Styles */
+.word-reveal {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.word-reveal span {
+    display: inline-block;
+    transform: translateY(100%);
+}

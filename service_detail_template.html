@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{SERVICE_TITLE}} | VICKY PARLOUR</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Premium Before/After Slider */
+        .before-after-universe {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ba-slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            background-color: #000;
+        }
+
+        .ba-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .ba-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .ba-before {
+            z-index: 1;
+        }
+
+        .ba-after {
+            z-index: 2;
+            width: 50%; /* Initial split width */
+            overflow: hidden;
+            border-right: 2px solid var(--gold);
+        }
+
+        /* Set width of image inside the resized div to match outer container */
+        .ba-after img {
+            width: 800px; /* Locked to max-width */
+            max-width: none;
+        }
+
+        /* Adjust nested image size at different screen resolutions */
+        @media (max-width: 800px) {
+            .ba-slider-container { height: 400px; }
+            .ba-after img { width: 100vw; }
+        }
+        @media (max-width: 500px) {
+            .ba-slider-container { height: 300px; }
+        }
+
+        .ba-handle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 50%;
+            margin-left: -20px;
+            margin-top: 230px; /* half height minus half handle */
+            z-index: 3;
+            cursor: ew-resize;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--gold-glow);
+            color: #000;
+            font-size: 14px;
+            pointer-events: auto;
+            transition: transform 0.2s;
+        }
+
+        .ba-handle:hover {
+            transform: scale(1.15);
+        }
+
+        .ba-label {
+            position: absolute;
+            bottom: 20px;
+            padding: 8px 15px;
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            font-weight: 800;
+            font-size: 10px;
+            letter-spacing: 2px;
+            z-index: 4;
+            text-transform: uppercase;
+        }
+
+        .ba-label.before-label {
+            right: 20px;
+        }
+
+        .ba-label.after-label {
+            left: 20px;
+        }
+
+        /* Benefits grid and lists */
+        .benefits-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .benefits-list { grid-template-columns: 1fr; }
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+
+        .benefits-list li:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .benefits-list li span {
+            font-family: var(--font-heading);
+            font-size: 12px;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        .benefits-list li i {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cinematic Multiverse Atmosphere -->
+    <div class="multiverse-atmosphere">
+        <div class="fog-layer"></div>
+        <div class="light-wave"></div>
+        <div class="shimmer-overlay"></div>
+    </div>
+
+    <!-- Liquid Preloader -->
+    <div id="preloader">
+        <div class="loader-content">
+            <h1 class="loader-text gold-text">VICKY PARLOUR</h1>
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Floating Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Ultra-Custom Cursor -->
+    <div id="custom-cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Premium Navbar -->
+    <nav>
+        <div class="logo">
+            <h1 class="logo-text" style="cursor: pointer;" onclick="window.location.href='/index.html'">VP.<span>PARLOUR</span></h1>
+        </div>
+        <div class="nav-wrapper">
+            <ul class="nav-links">
+                <li><a href="/index.html">HOME</a></li>
+                <li><a href="/about.html">LEGACY</a></li>
+                <li><a href="/services.html" class="glow-text-gold">SERVICES</a></li>
+                <li><a href="/academy.html">ACADEMY</a></li>
+                <li><a href="/gallery.html">GALLERY</a></li>
+                <li><a href="/contact.html">CONTACT</a></li>
+            </ul>
+        </div>
+        <div class="nav-cta">
+            <a href="/contact.html" class="btn-bold magnetic">BOOK NOW</a>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header id="hero" style="min-height: 60vh; padding-top: 150px; display: flex; flex-direction: column; justify-content: center; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('{{SERVICE_BANNER}}') no-repeat center center/cover;">
+        <div class="hero-container" style="text-align: left; padding: 0 10%;">
+            <div style="font-size: 3.5rem; color: var(--gold); margin-bottom: 20px;"><i class="{{SERVICE_ICON}}"></i></div>
+            <h1 class="hero-title split-text-reveal glow-text-white" style="margin-bottom: 10px; font-size: clamp(3rem, 8vw, 6rem);">{{SERVICE_TITLE}}</h1>
+            <p class="hero-subtitle" style="font-size: 1.2rem; color: var(--gold); letter-spacing: 3px;">PREMIUM TREATMENT • STARTING FROM {{SERVICE_PRICE}}</p>
+        </div>
+    </header>
+
+    <!-- Main Content details -->
+    <section style="background: #030303; padding: 120px 10%;">
+        <div style="display: flex; flex-wrap: wrap; gap: 80px;">
+            <div style="flex: 1.5; min-width: 300px;">
+                <h2 class="glow-text-white" style="font-size: 3rem; margin-bottom: 30px;">THE EXPERIENCE.</h2>
+                <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-soft); font-family: var(--font-body); margin-bottom: 40px;">
+                    {{SERVICE_DESCRIPTION}} Our luxury parlor treatments are crafted individually to meet the precise requirements of high-profile aesthetics. We use elite products to guarantee flawless results.
+                </p>
+
+                <h3 class="glow-text-gold" style="font-size: 1.5rem; margin-bottom: 20px; letter-spacing: 2px;">BENEFITS & DETAILS</h3>
+                <ul class="benefits-list">
+                    {{SERVICE_BENEFITS}}
+                </ul>
+            </div>
+
+            <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="booking-container glass-panel magnetic" style="padding: 40px; border: 1px solid var(--glass-border); background: var(--glass); text-align: center;">
+                    <h3 class="glow-text-gold" style="font-size: 1.5rem; margin-bottom: 15px;">SECURE SESSION</h3>
+                    <p style="color: var(--text-soft); font-size: 13px; line-height: 1.6; margin-bottom: 30px;">Ready to elevate your beauty level? Instantly contact us via WhatsApp or book a high-end personal consultation spot.</p>
+                    
+                    <a href="https://wa.me/919876543210?text=Hi%20Vicky%20Parlour,%20I%20am%20interested%20in%20booking%20the%20{{SERVICE_TITLE}}%20service." target="_blank" class="btn-bold glow-button magnetic" style="display: block; margin-bottom: 20px; text-align: center;">
+                        <i class="fab fa-whatsapp" style="margin-right: 10px;"></i> WHATSAPP INQUIRY
+                    </a>
+                    <a href="/contact.html" class="btn-bold secondary magnetic" style="display: block; text-align: center;">
+                        BOOK APPOINTMENT
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Before/After Slider Section -->
+    <section style="background: #000; padding: 120px 10%; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);">
+        <div class="section-header" style="text-align: center;">
+            <h2 class="section-title split-text glow-text-white" style="font-size: clamp(2.5rem, 6vw, 4.5rem);">TRANSFORMATION.</h2>
+            <p class="glow-text-gold">DRAG THE SLIDER TO EXPLORE THE ARTISTRY.</p>
+        </div>
+
+        <div class="before-after-universe">
+            <div class="ba-slider-container">
+                <!-- Before image (right side stack) -->
+                <div class="ba-image ba-before">
+                    <img src="{{SERVICE_BEFORE}}" alt="Before treatment">
+                </div>
+                <!-- After image (left side stack with dynamic clipping width) -->
+                <div class="ba-image ba-after" id="after-image-container">
+                    <img src="{{SERVICE_AFTER}}" alt="After treatment" id="after-image-element">
+                </div>
+                <!-- Sliding handle bar -->
+                <div class="ba-handle" id="slider-handle">
+                    <i class="fas fa-arrows-alt-h"></i>
+                </div>
+                <!-- Labels -->
+                <span class="ba-label after-label">AFTER</span>
+                <span class="ba-label before-label">BEFORE</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion Section -->
+    <section style="background: #050505; padding: 120px 10%;">
+        <div class="section-header">
+            <h2 class="section-title split-text glow-text-white" style="font-size: clamp(2.5rem, 6vw, 4.5rem);">QUESTIONS.</h2>
+            <p class="glow-text-gold">ABOUT {{SERVICE_TITLE}}.</p>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto;">
+            {{SERVICE_FAQS}}
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="futuristic-footer">
+        <div class="footer-glow-trail"></div>
+        <div class="footer-top-cta">
+            <h2 class="glow-text-white" style="font-size: 3rem; margin-bottom: 30px;">READY FOR THE MULTIVERSE?</h2>
+            <a href="/contact.html" class="btn-bold glow-button magnetic">BOOK YOUR LUXURY EXPERIENCE</a>
+        </div>
+        <div class="footer-main-grid">
+            <div class="footer-logo-side">
+                <h1 class="glow-text-gold">VP.</h1>
+                <p style="color: var(--text-soft); font-size: 14px; line-height: 1.6;">TRANSFORMING BEAUTY INTO LUXURY.<br>THE ULTIMATE DESTINATION FOR BOLD ESTHETICS AND ELITE ACADEMY TRAINING.</p>
+                <div class="footer-divider"></div>
+                <div class="footer-social-wrapper">
+                    <a href="#" class="social-glass-btn magnetic"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-glass-btn magnetic"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-glass-btn magnetic"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="social-glass-btn magnetic"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-side">
+                <h3>QUICK LINKS.</h3>
+                <ul>
+                    <li><a href="/index.html">HOME</a></li>
+                    <li><a href="/services.html">SERVICES</a></li>
+                    <li><a href="/academy.html">ACADEMY</a></li>
+                    <li><a href="/gallery.html">GALLERY</a></li>
+                    <li><a href="/contact.html">BOOKING</a></li>
+                    <li><a href="/contact.html">CONTACT</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact-side">
+                <h3>CONTACT US.</h3>
+                <p style="margin-bottom: 15px;" class="footer-phone"><i class="fas fa-phone gold-text" style="margin-right: 10px;"></i> +91 98765 43210</p>
+                <p style="margin-bottom: 15px;" class="footer-email"><i class="fas fa-envelope gold-text" style="margin-right: 10px;"></i> HELLO@VICKYPARLOUR.COM</p>
+                <p style="margin-bottom: 15px;" class="footer-address"><i class="fas fa-map-marker-alt gold-text" style="margin-right: 10px;"></i> CHALISGAON, MAHARASHTRA</p>
+            </div>
+        </div>
+        <div class="footer-bottom-bar">
+            <p>&copy; 2026 VICKY PARLOUR. ALL RIGHTS RESERVED.</p>
+            <p>DESIGNED BY <span class="gold-text">RGAI TECHNOLOGY</span></p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="/script.js"></script>
+    <script>
+        // Before/After Interactive Slider Engine
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.ba-slider-container');
+            const afterContainer = document.getElementById('after-image-container');
+            const afterImage = document.getElementById('after-image-element');
+            const handle = document.getElementById('slider-handle');
+
+            if (!container || !afterContainer || !afterImage || !handle) return;
+
+            // Set handle initial position based on slider half height
+            const sliderHeight = container.offsetHeight;
+            handle.style.marginTop = (sliderHeight / 2 - 20) + 'px';
+
+            // Ensure inner image width matches parent container width
+            function setWidths() {
+                const width = container.offsetWidth;
+                afterImage.style.width = width + 'px';
+            }
+            setWidths();
+            window.addEventListener('resize', setWidths);
+
+            let isDragging = false;
+
+            function slide(x) {
+                const rect = container.getBoundingClientRect();
+                let position = x - rect.left;
+                
+                // Keep inside bounds
+                if (position < 0) position = 0;
+                if (position > rect.width) position = rect.width;
+
+                const percentage = (position / rect.width) * 100;
+                afterContainer.style.width = percentage + '%';
+                handle.style.left = percentage + '%';
+            }
+
+            // Mouse Events
+            handle.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                e.preventDefault();
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                slide(e.clientX);
+            });
+
+            // Touch Events
+            handle.addEventListener('touchstart', (e) => {
+                isDragging = true;
+            });
+
+            window.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                if (e.touches.length > 0) {
+                    slide(e.touches[0].clientX);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

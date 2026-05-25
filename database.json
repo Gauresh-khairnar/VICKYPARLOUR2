@@ -1,0 +1,395 @@
+{
+  "hero": {
+    "title_line1": "BOLD",
+    "title_line2": "BEAUTY",
+    "title_line3": "LEVEL.",
+    "subtitle": "PREMIUM SALON • ADVANCED ACADEMY • BRIDAL STUDIO • CHALISGAON"
+  },
+  "contact": {
+    "phone": "+91 98765 43210",
+    "email": "HELLO@VICKYPARLOUR.COM",
+    "address": "CHALISGAON, MAHARASHTRA",
+    "hours": "MON - SUN: 10:00 AM - 09:00 PM"
+  },
+  "services": [
+    {
+      "id": "1",
+      "slug": "elite-haircuts",
+      "title": "ELITE HAIRCUTS",
+      "icon": "fas fa-cut",
+      "description": "Architectural precision for the modern individual.",
+      "benefits": [
+        "Bespoke feature analysis & texture mapping",
+        "Senior stylist structural shape design",
+        "Premium charcoal scalp detox cleanse",
+        "Signature high-gloss blowout & finish styling"
+      ],
+      "price": "₹40+",
+      "banner_image": "assets/hero.png",
+      "before_image": "assets/bridal.png",
+      "after_image": "assets/hero.png",
+      "faqs": [
+        {
+          "q": "How long does the structural haircut take?",
+          "a": "Our premium haircuts take between 45 to 60 minutes and include custom profiling."
+        },
+        {
+          "q": "Do I need to wash my hair before arriving?",
+          "a": "No, a professional therapeutic wash is already integrated into the experience."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "slug": "chrome-coloring",
+      "title": "CHROME COLORING",
+      "icon": "fas fa-palette",
+      "description": "Futuristic shades with metallic depth and shine.",
+      "benefits": [
+        "Advanced damage-shield pre-color preparation",
+        "Holographic metallic depth shade design",
+        "Pure active bond protection integration",
+        "Color-lock shine enhancement glaze treatment"
+      ],
+      "price": "₹120+",
+      "banner_image": "assets/hero.png",
+      "before_image": "assets/hero.png",
+      "after_image": "assets/bridal.png",
+      "faqs": [
+        {
+          "q": "What is Chrome Coloring?",
+          "a": "It is our high-performance metallic highlighting system that adds architectural shine without compromise."
+        },
+        {
+          "q": "Is bond-protection included?",
+          "a": "Yes, premium plex protective treatments are automatically included in all chemical processes."
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "slug": "bridal-couture",
+      "title": "BRIDAL COUTURE",
+      "icon": "fas fa-crown",
+      "description": "The ultimate high-definition transformation.",
+      "benefits": [
+        "Bespoke bridal styling consultation",
+        "High-definition, water-resistant luxury base makeup",
+        "Premium hair draping & master accessories setup",
+        "On-site final touch-up service guarantee"
+      ],
+      "price": "₹500+",
+      "banner_image": "assets/bridal.png",
+      "before_image": "assets/facial.png",
+      "after_image": "assets/bridal.png",
+      "faqs": [
+        {
+          "q": "How early should I book the bridal couture?",
+          "a": "We recommend booking bridal slots 3 to 6 months in advance to secure key artists."
+        },
+        {
+          "q": "Do you provide bridal makeup trials?",
+          "a": "Yes, custom HD bridal test sessions can be booked separately."
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "slug": "skin-reboot",
+      "title": "SKIN REBOOT",
+      "icon": "fas fa-gem",
+      "description": "Advanced dermaceutical facial therapies.",
+      "benefits": [
+        "Deep pore vacuum cleanse and extraction",
+        "Customized active multi-peptide peeling",
+        "Cryo-facial skin tight and lifting application",
+        "High-frequency dynamic collagen booster mask"
+      ],
+      "price": "₹90+",
+      "banner_image": "assets/facial.png",
+      "before_image": "assets/facial.png",
+      "after_image": "assets/hero.png",
+      "faqs": [
+        {
+          "q": "What skin types is this suitable for?",
+          "a": "Skin Reboot is fully customizable to address sensitive, acne-prone, dry, or aging skin types."
+        },
+        {
+          "q": "How soon will I see the glow?",
+          "a": "Immediate lifting and clarity are visible post-session, with maximum radiance peaking in 48 hours."
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "slug": "neo-nail-art",
+      "title": "NEO NAIL ART",
+      "icon": "fas fa-hand-sparkles",
+      "description": "3D designs and holographic finishes.",
+      "benefits": [
+        "Elite cuticle and nail structural shaping",
+        "Liquid holographic gel extension base layer",
+        "Bespoke hand-painted 3D art accents",
+        "High-scratch resilience gel-shield top finish"
+      ],
+      "price": "₹60+",
+      "banner_image": "assets/academy.png",
+      "before_image": "assets/academy.png",
+      "after_image": "assets/hero.png",
+      "faqs": [
+        {
+          "q": "How long do holographic gel nails last?",
+          "a": "With premium care, our Neo Nail extensions remain flawless for 3 to 4 weeks."
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "slug": "hair-detox",
+      "title": "HAIR DETOX",
+      "icon": "fas fa-spa",
+      "description": "Deep-tissue scalp therapy and rejuvenation.",
+      "benefits": [
+        "Scalp sebum microscopic diagnostics",
+        "Deep cellular residue exfoliator scrub",
+        "Micronized steam structural vitamin infusion",
+        "Relaxing Ayurvedic head pressure massage session"
+      ],
+      "price": "₹70+",
+      "banner_image": "assets/hero.png",
+      "before_image": "assets/hero.png",
+      "after_image": "assets/facial.png",
+      "faqs": [
+        {
+          "q": "Why is structural scalp detox necessary?",
+          "a": "It clears follicle blocking residues, optimizing micro-circulation to promote organic thick growth."
+        }
+      ]
+    }
+  ],
+  "gallery": [
+    {
+      "id": "1",
+      "image_url": "assets/bridal.png",
+      "title": "BRIDAL GLAMOUR",
+      "category": "bridal"
+    },
+    {
+      "id": "2",
+      "image_url": "assets/hero.png",
+      "title": "STUDIO VIBES",
+      "category": "styling"
+    },
+    {
+      "id": "3",
+      "image_url": "assets/facial.png",
+      "title": "SKIN RITUALS",
+      "category": "skin"
+    },
+    {
+      "id": "4",
+      "image_url": "assets/academy.png",
+      "title": "ACADEMY LIFE",
+      "category": "academy"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "1",
+      "name": "Aditi Sharma",
+      "role": "Luxury Bride",
+      "rating": 5,
+      "review": "Vicky Parlour made my bridal day magical! The styling was pure high-end art."
+    },
+    {
+      "id": "2",
+      "name": "Rahul Verma",
+      "role": "Creative Lead",
+      "rating": 5,
+      "review": "Elite precision, modern structure, and premium colors. Truly Silicon Valley class."
+    }
+  ],
+  "team": [
+    {
+      "id": "1",
+      "name": "VICKY",
+      "role": "FOUNDER & MASTER STYLIST",
+      "image_url": "assets/hero.png"
+    },
+    {
+      "id": "2",
+      "name": "SARA",
+      "role": "CHIEF BRIDAL ARTIST",
+      "image_url": "assets/bridal.png"
+    },
+    {
+      "id": "3",
+      "name": "LEO",
+      "role": "SKIN THERAPY EXPERT",
+      "image_url": "assets/facial.png"
+    }
+  ],
+  "faqs": [
+    {
+      "id": "1",
+      "question": "Do you accept walk-ins?",
+      "answer": "We prioritize booked slots to guarantee our signature immersive treatment, but we welcome walk-ins based on session openings."
+    },
+    {
+      "id": "2",
+      "question": "Are academy certifications valid?",
+      "answer": "Yes, our luxury academy diplomas are ISO certified and highly accredited worldwide across modern fashion platforms."
+    },
+    {
+      "id": "3",
+      "question": "What products are utilized?",
+      "answer": "We strictly utilize top-tier international brands including Olaplex, L'Oréal Professional, and MAC Cosmetics."
+    }
+  ],
+  "pricing": [
+    {
+      "id": "1",
+      "name": "BRONZE ESSENTIALS",
+      "price": "₹45",
+      "features": [
+        "Precision Cut",
+        "Premium Wash",
+        "Basic Finish styling",
+        "15 Mins Scalp Massage"
+      ],
+      "popular": false
+    },
+    {
+      "id": "2",
+      "name": "GOLD TRANSFORMATION",
+      "price": "₹125",
+      "features": [
+        "Master Cut",
+        "Dermaceutical Skin Boost",
+        "Active Bond Protection",
+        "Premium Blowout"
+      ],
+      "popular": true
+    },
+    {
+      "id": "3",
+      "name": "ROYAL COUTURE",
+      "price": "₹350",
+      "features": [
+        "Bespoke Bridal Consult",
+        "Full HD Luxury Makeover",
+        "Master Accessories",
+        "24/7 Artist Care"
+      ],
+      "popular": false
+    }
+  ],
+  "blogs": [
+    {
+      "id": "1",
+      "title": "Metallic Glaze: The Modern Standard",
+      "slug": "metallic-glaze-trends",
+      "content": "Discover how holographic and metallic structures are setting the standard of visual aesthetics across modern styling studios this summer...",
+      "image_url": "assets/hero.png",
+      "date": "2026-05-17"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "#VP12225",
+      "name": "alert(\"xss\")Test User",
+      "phone": "9876543210",
+      "email": "test@gmail.com",
+      "service": "Hair Styling",
+      "date": "2026-06-01",
+      "time": "12:00",
+      "notes": "Test notes",
+      "status": "pending",
+      "timestamp": "2026-05-25T07:38:31.293Z"
+    }
+  ],
+  "inquiries": [],
+  "admin": {
+    "username": "vicky",
+    "passwordSalt": "28015fca6d7bb9956381710bc65da10f",
+    "passwordHash": "3d436e9a0981e2c6ca3daa300b4b440628711231091c501cf8486ecf0b06e58dcfd83503eab297d5a64aa826d3082ceb169662ed818e96d76006114326bd534c",
+    "recoveryEmail": "recovery@vickyparlour.com",
+    "authProtection": false,
+    "sessions": [
+      {
+        "sessionId": "11b85be478f990c514061bb03ce31885c3c3e8cac052e289d177d0ded7476455",
+        "expiresAt": 1779701911311,
+        "ip": "::1",
+        "created": "2026-05-25T07:38:31.310Z"
+      }
+    ],
+    "loginActivity": [
+      {
+        "timestamp": "2026-05-25T07:42:46.162Z",
+        "ip": "::1",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+        "success": true
+      },
+      {
+        "timestamp": "2026-05-25T07:40:04.152Z",
+        "ip": "::1",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+        "success": true
+      },
+      {
+        "timestamp": "2026-05-25T07:38:31.320Z",
+        "ip": "::1",
+        "userAgent": "Unknown",
+        "success": false
+      },
+      {
+        "timestamp": "2026-05-25T07:38:31.319Z",
+        "ip": "::1",
+        "userAgent": "Unknown",
+        "success": false
+      },
+      {
+        "timestamp": "2026-05-25T07:38:31.318Z",
+        "ip": "::1",
+        "userAgent": "Unknown",
+        "success": false
+      },
+      {
+        "timestamp": "2026-05-25T07:38:31.316Z",
+        "ip": "::1",
+        "userAgent": "Unknown",
+        "success": false
+      },
+      {
+        "timestamp": "2026-05-25T07:38:31.314Z",
+        "ip": "::1",
+        "userAgent": "Unknown",
+        "success": false
+      },
+      {
+        "timestamp": "2026-05-25T07:38:31.310Z",
+        "ip": "::1",
+        "userAgent": "Unknown",
+        "success": true
+      },
+      {
+        "timestamp": "2026-05-25T07:38:31.291Z",
+        "ip": "::1",
+        "userAgent": "Unknown",
+        "success": false
+      },
+      {
+        "timestamp": "2026-05-25T07:38:31.290Z",
+        "ip": "::1",
+        "userAgent": "Unknown",
+        "success": true
+      },
+      {
+        "timestamp": "2026-05-25T07:38:31.284Z",
+        "ip": "::1",
+        "userAgent": "Unknown",
+        "success": true
+      }
+    ]
+  }
+}

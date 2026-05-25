@@ -1,0 +1,499 @@
+/* 
+    VICKY PARLOUR - THE BOLD BEAUTY MULTIVERSE
+    ULTRA-PREMIUM, MULTI-ANIMATED, CONTENT-RICH
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;600;800&display=swap');
+
+:root {
+    --bg-dark: #000000;
+    --bg-matte: #0a0a0a;
+    --bg-accent: #0f0f0f;
+    --gold: #FFD700;
+    --gold-bright: #ffdf00;
+    --gold-glow: 0 0 15px rgba(255, 215, 0, 0.6);
+    --white-glow: 0 0 10px rgba(255, 255, 255, 0.4);
+    --rose-gold: #b76e79;
+    --neon-purple: #bc13fe;
+    --neon-pink: #ff00ff;
+    --neon-glow: 0 0 20px var(--neon-purple);
+    --text-white: #ffffff;
+    --text-soft: #888888;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --font-heading: 'Syne', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    cursor: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); }
+
+/* Typography Universe */
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 800; text-transform: uppercase; line-height: 0.9; }
+.gold-text { color: var(--gold); text-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+
+/* Global Glow Universe */
+.glow-text-white {
+    color: #fff;
+    text-shadow: var(--white-glow);
+    transition: var(--transition);
+}
+.glow-text-white:hover {
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+    filter: brightness(1.2);
+}
+
+.glow-text-gold {
+    color: var(--gold);
+    text-shadow: var(--gold-glow);
+    background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShine 3s linear infinite;
+}
+
+@keyframes textShine {
+    to { background-position: 200% center; }
+}
+
+.neon-border {
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 0 10px rgba(188, 19, 254, 0.1), 0 0 10px rgba(188, 19, 254, 0.1);
+}
+
+.glow-button {
+    background: linear-gradient(45deg, var(--gold), #fff, var(--gold));
+    background-size: 200% auto;
+    color: #000;
+    border: none;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    animation: textShine 3s linear infinite;
+}
+
+/* Custom Cursor Universe */
+#custom-cursor {
+    width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9999;
+}
+.cursor-trail {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9997;
+    filter: blur(5px);
+    box-shadow: var(--gold-glow);
+}
+#cursor-follower {
+    width: 30px; height: 30px; border: 1px solid var(--gold); border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9998;
+    transition: transform 0.15s ease-out;
+}
+
+/* Preloader Universe */
+#preloader {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; display: flex; justify-content: center; align-items: center; z-index: 10000;
+}
+.loader-bar { width: 0; height: 2px; background: var(--gold); margin-top: 20px; transition: width 0.5s; }
+
+/* Navbar Universe */
+nav {
+    position: fixed; top: 0; width: 100%; padding: 40px 5%;
+    display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+    transition: var(--transition);
+}
+nav.scrolled { padding: 20px 5%; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+
+.logo-text { font-size: 24px; letter-spacing: -1px; }
+.logo-text span { font-weight: 300; font-size: 14px; margin-left: 5px; color: var(--text-soft); }
+
+.nav-links { display: flex; list-style: none; gap: 40px; }
+.nav-links a { color: #fff; text-decoration: none; font-weight: 800; font-size: 11px; letter-spacing: 2px; position: relative; }
+.nav-links a::before { content: attr(data-text); position: absolute; color: var(--gold); top: 0; left: 0; width: 0; overflow: hidden; transition: 0.5s; }
+.nav-links a:hover::before { width: 100%; }
+
+/* Hero Universe */
+#hero {
+    height: 100vh; display: flex; align-items: center; padding: 0 10%;
+    position: relative; overflow: hidden;
+}
+.hero-title { font-size: clamp(4rem, 12vw, 10rem); margin-bottom: 30px; }
+.hero-subtitle { font-size: 14px; letter-spacing: 5px; color: var(--text-soft); margin-bottom: 50px; }
+
+.hero-scroll {
+    position: absolute; bottom: 50px; left: 10%; display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.scroll-line { width: 1px; height: 100px; background: linear-gradient(to bottom, var(--gold), transparent); }
+
+/* Sections Universe */
+section { padding: 150px 10%; position: relative; }
+.section-header { margin-bottom: 100px; }
+.section-title { font-size: clamp(3rem, 10vw, 8rem); margin-bottom: 20px; }
+
+/* Grid Universes */
+.services-multiverse {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;
+}
+.service-card-premium {
+    padding: 60px 40px; background: var(--glass); border: 1px solid var(--glass-border);
+    transition: var(--transition); position: relative; overflow: hidden;
+}
+.service-card-premium:hover { 
+    border-color: var(--neon-purple); 
+    background: var(--bg-accent); 
+    transform: translateY(-20px) skewY(-1deg);
+    box-shadow: 0 0 40px rgba(188, 19, 254, 0.2);
+}
+.card-icon { font-size: 2.5rem; color: var(--gold); margin-bottom: 30px; }
+.price-tag { display: block; margin-top: 30px; font-size: 1.5rem; font-weight: 800; }
+
+/* Process Universe */
+.process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; }
+.process-step { position: relative; padding-top: 50px; }
+.step-num { position: absolute; top: 0; left: 0; font-size: 5rem; opacity: 0.1; font-weight: 800; }
+
+/* Academy Universe */
+.academy-flex { display: flex; flex-wrap: wrap; gap: 100px; align-items: center; }
+.academy-text { flex: 1; min-width: 300px; }
+.academy-visual { flex: 1; min-width: 300px; }
+.image-parallax-wrapper { overflow: hidden; height: 600px; border: 1px solid var(--glass-border); }
+.parallax-img { width: 100%; height: 120%; object-fit: cover; }
+
+/* Team Universe */
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+.team-card { padding: 40px; text-align: center; }
+.team-img { width: 100%; height: 400px; overflow: hidden; margin-bottom: 30px; }
+.team-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transition: 0.8s; }
+.team-card:hover .team-img img { filter: grayscale(0); transform: scale(1.1); }
+
+/* FAQ Universe */
+.faq-container { display: grid; gap: 20px; }
+.faq-item { padding: 30px; }
+
+/* Floating Orbs Universe */
+.orb {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -3;
+    opacity: 0.15;
+    pointer-events: none;
+    animation: orbFloat 20s infinite alternate;
+}
+
+.orb-1 { top: -100px; left: -100px; background: var(--neon-purple); }
+.orb-2 { bottom: -100px; right: -100px; background: var(--rose-gold); animation-delay: -5s; }
+.orb-3 { top: 50%; left: 50%; background: var(--gold); animation-delay: -10s; }
+
+@keyframes orbFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(100px, 100px) scale(1.2); }
+}
+
+/* Futuristic Glow Footer Universe */
+.futuristic-footer {
+    position: relative;
+    padding: 150px 10% 50px;
+    background: #050505;
+    border-top: 1px solid var(--glass-border);
+    overflow: hidden;
+}
+
+.footer-top-cta {
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+.footer-main-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 80px;
+}
+
+.footer-logo-side h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.footer-divider {
+    width: 50px;
+    height: 2px;
+    background: var(--gold);
+    box-shadow: var(--gold-glow);
+    margin: 20px 0;
+}
+
+.footer-links-side h3, .footer-contact-side h3 {
+    font-size: 14px;
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+    color: var(--gold);
+}
+
+.footer-links-side ul {
+    list-style: none;
+}
+
+.footer-links-side ul li {
+    margin-bottom: 15px;
+}
+
+.footer-links-side ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.footer-links-side ul li a:hover {
+    color: var(--gold);
+    text-shadow: var(--gold-glow);
+}
+
+.footer-links-side ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: 0.5s;
+}
+
+.footer-links-side ul li a:hover::after {
+    width: 100%;
+}
+
+.footer-social-wrapper {
+    display: flex;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.social-glass-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 18px;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.social-glass-btn:hover {
+    background: var(--gold);
+    color: #000;
+    box-shadow: var(--gold-glow);
+    transform: translateY(-10px);
+}
+
+.footer-bottom-bar {
+    border-top: 1px solid var(--glass-border);
+    padding-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-soft);
+}
+
+.footer-glow-trail {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    top: 0;
+    left: -100%;
+    animation: glowMove 5s infinite;
+}
+
+@keyframes glowMove {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.btn-bold {
+    padding: 20px 45px; background: var(--gold); color: #000; text-decoration: none;
+    font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 2px;
+    transition: var(--transition); border: 2px solid var(--gold);
+}
+.btn-bold.secondary { background: transparent; color: #fff; }
+.btn-bold:hover { background: #fff; border-color: #fff; color: #000; transform: scale(1.1); box-shadow: 0 0 50px rgba(255,255,255,0.2); }
+
+@media (max-width: 992px) {
+    #hero { padding: 0 5%; }
+    .hero-title { font-size: 5rem; }
+    .nav-links { display: none; }
+    .footer-main-grid { grid-template-columns: 1fr; }
+}/ *   C i n e m a t i c   S c r o l l   &   R e v e a l   U n i v e r s e   * /  
+ . r e v e a l - b l u r   {  
+         f i l t e r :   b l u r ( 2 0 p x ) ;  
+         o p a c i t y :   0 ;  
+         t r a n s i t i o n :   f i l t e r   1 . 5 s   e a s e ,   o p a c i t y   1 . 5 s   e a s e ;  
+ }  
+ . r e v e a l - b l u r . a c t i v e   {  
+         f i l t e r :   b l u r ( 0 ) ;  
+         o p a c i t y :   1 ;  
+ }  
+  
+ . s c r o l l - p r o g r e s s - c o n t a i n e r   {  
+         p o s i t i o n :   f i x e d ;  
+         t o p :   0 ;  
+         l e f t :   0 ;  
+         w i d t h :   1 0 0 % ;  
+         h e i g h t :   3 p x ;  
+         z - i n d e x :   1 0 0 1 ;  
+         b a c k g r o u n d :   r g b a ( 2 5 5 ,   2 5 5 ,   2 5 5 ,   0 . 0 5 ) ;  
+ }  
+  
+ . s c r o l l - p r o g r e s s - b a r   {  
+         h e i g h t :   1 0 0 % ;  
+         b a c k g r o u n d :   v a r ( - - g o l d ) ;  
+         w i d t h :   0 % ;  
+         b o x - s h a d o w :   v a r ( - - g o l d - g l o w ) ;  
+ }  
+  
+ / *   H o r i z o n t a l   S c r o l l   G a l l e r y   U n i v e r s e   * /  
+ . h o r i z o n t a l - g a l l e r y - w r a p p e r   {  
+         o v e r f l o w :   h i d d e n ;  
+         b a c k g r o u n d :   # 0 5 0 5 0 5 ;  
+         p a d d i n g :   1 0 0 p x   0 ;  
+ }  
+  
+ . h o r i z o n t a l - s c r o l l - c o n t a i n e r   {  
+         d i s p l a y :   f l e x ;  
+         g a p :   4 0 p x ;  
+         p a d d i n g :   0   1 0 % ;  
+         w i d t h :   f i t - c o n t e n t ;  
+ }  
+  
+ . g a l l e r y - i t e m - c i n e m a t i c   {  
+         w i d t h :   5 0 0 p x ;  
+         h e i g h t :   7 0 0 p x ;  
+         f l e x - s h r i n k :   0 ;  
+         p o s i t i o n :   r e l a t i v e ;  
+         o v e r f l o w :   h i d d e n ;  
+         b o r d e r :   1 p x   s o l i d   v a r ( - - g l a s s - b o r d e r ) ;  
+ }  
+  
+ . g a l l e r y - i t e m - c i n e m a t i c   i m g   {  
+         w i d t h :   1 0 0 % ;  
+         h e i g h t :   1 0 0 % ;  
+         o b j e c t - f i t :   c o v e r ;  
+         t r a n s i t i o n :   t r a n s f o r m   1 . 5 s   c u b i c - b e z i e r ( 0 . 2 3 ,   1 ,   0 . 3 2 ,   1 ) ;  
+ }  
+  
+ . g a l l e r y - i t e m - c i n e m a t i c : h o v e r   i m g   {  
+         t r a n s f o r m :   s c a l e ( 1 . 1 ) ;  
+ }  
+  
+ . g a l l e r y - o v e r l a y   {  
+         p o s i t i o n :   a b s o l u t e ;  
+         b o t t o m :   0 ;  
+         l e f t :   0 ;  
+         w i d t h :   1 0 0 % ;  
+         p a d d i n g :   4 0 p x ;  
+         b a c k g r o u n d :   l i n e a r - g r a d i e n t ( t o   t o p ,   r g b a ( 0 , 0 , 0 , 0 . 8 ) ,   t r a n s p a r e n t ) ;  
+         t r a n s f o r m :   t r a n s l a t e Y ( 1 0 0 % ) ;  
+         t r a n s i t i o n :   v a r ( - - t r a n s i t i o n ) ;  
+ }  
+  
+ . g a l l e r y - i t e m - c i n e m a t i c : h o v e r   . g a l l e r y - o v e r l a y   {  
+         t r a n s f o r m :   t r a n s l a t e Y ( 0 ) ;  
+ }  
+  
+ / *   W o r d   R e v e a l   S t y l e s   * /  
+ . w o r d - r e v e a l   {  
+         o v e r f l o w :   h i d d e n ;  
+         d i s p l a y :   i n l i n e - b l o c k ;  
+         v e r t i c a l - a l i g n :   b o t t o m ;  
+ }  
+  
+ . w o r d - r e v e a l   s p a n   {  
+         d i s p l a y :   i n l i n e - b l o c k ;  
+         t r a n s f o r m :   t r a n s l a t e Y ( 1 0 0 % ) ;  
+ }  
+ / *   U l t r a - P r e m i u m   C i n e m a t i c   B a c k g r o u n d   A t m o s p h e r e   * /  
+ . m u l t i v e r s e - a t m o s p h e r e   {  
+         p o s i t i o n :   f i x e d ;  
+         t o p :   0 ;  
+         l e f t :   0 ;  
+         w i d t h :   1 0 0 % ;  
+         h e i g h t :   1 0 0 % ;  
+         p o i n t e r - e v e n t s :   n o n e ;  
+         z - i n d e x :   - 1 ;  
+         o v e r f l o w :   h i d d e n ;  
+ }  
+  
+ . f o g - l a y e r   {  
+         p o s i t i o n :   a b s o l u t e ;  
+         w i d t h :   2 0 0 % ;  
+         h e i g h t :   2 0 0 % ;  
+         b a c k g r o u n d :   r a d i a l - g r a d i e n t ( c i r c l e   a t   c e n t e r ,   t r a n s p a r e n t   3 0 % ,   r g b a ( 1 0 ,   1 0 ,   1 0 ,   0 . 8 )   7 0 % ) ;  
+         a n i m a t i o n :   f o g - f l o a t   3 0 s   l i n e a r   i n f i n i t e ;  
+         o p a c i t y :   0 . 4 ;  
+ }  
+  
+ @ k e y f r a m e s   f o g - f l o a t   {  
+         0 %   {   t r a n s f o r m :   t r a n s l a t e ( - 2 5 % ,   - 2 5 % )   r o t a t e ( 0 d e g ) ;   }  
+         1 0 0 %   {   t r a n s f o r m :   t r a n s l a t e ( - 2 5 % ,   - 2 5 % )   r o t a t e ( 3 6 0 d e g ) ;   }  
+ }  
+  
+ . l i g h t - w a v e   {  
+         p o s i t i o n :   a b s o l u t e ;  
+         w i d t h :   1 0 0 % ;  
+         h e i g h t :   1 0 0 % ;  
+         b a c k g r o u n d :   l i n e a r - g r a d i e n t ( 4 5 d e g ,   t r a n s p a r e n t ,   r g b a ( 2 1 2 ,   1 7 5 ,   5 5 ,   0 . 0 5 ) ,   t r a n s p a r e n t ) ;  
+         t o p :   - 5 0 % ;  
+         l e f t :   - 5 0 % ;  
+         t r a n s f o r m :   r o t a t e ( - 4 5 d e g ) ;  
+         a n i m a t i o n :   l i g h t - s w e e p   1 5 s   e a s e - i n - o u t   i n f i n i t e ;  
+ }  
+  
+ @ k e y f r a m e s   l i g h t - s w e e p   {  
+         0 %   {   t r a n s f o r m :   t r a n s l a t e X ( - 1 0 0 % )   r o t a t e ( - 4 5 d e g ) ;   }  
+         5 0 %   {   t r a n s f o r m :   t r a n s l a t e X ( 1 0 0 % )   r o t a t e ( - 4 5 d e g ) ;   }  
+         1 0 0 %   {   t r a n s f o r m :   t r a n s l a t e X ( - 1 0 0 % )   r o t a t e ( - 4 5 d e g ) ;   }  
+ }  
+  
+ . s h i m m e r - o v e r l a y   {  
+         p o s i t i o n :   a b s o l u t e ;  
+         t o p :   0 ;  
+         l e f t :   0 ;  
+         w i d t h :   1 0 0 % ;  
+         h e i g h t :   1 0 0 % ;  
+         b a c k g r o u n d - i m a g e :   u r l ( ' h t t p s : / / w w w . t r a n s p a r e n t t e x t u r e s . c o m / p a t t e r n s / c a r b o n - f i b r e . p n g ' ) ;   / *   S u b t l e   t e x t u r e   * /  
+         o p a c i t y :   0 . 0 3 ;  
+         m i x - b l e n d - m o d e :   o v e r l a y ;  
+ }  
+ 

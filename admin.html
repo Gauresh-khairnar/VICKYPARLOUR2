@@ -1,0 +1,2411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VP.CONTROL | ADMIN DASHBOARD</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Unique Admin Styling Override */
+        body {
+            background-color: #030303;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-nav {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-logo h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            letter-spacing: 3px;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Sidebar Tabs Navigation */
+        .admin-sidebar {
+            width: 250px;
+            background: #080808;
+            border-right: 1px solid var(--glass-border);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-soft);
+            padding: 15px 20px;
+            text-align: left;
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.02);
+            border-color: var(--glass-border);
+        }
+
+        .tab-btn.active {
+            color: #000;
+            background: var(--gold);
+            box-shadow: var(--gold-glow);
+            border-color: var(--gold);
+        }
+
+        /* Main Workspace Content Area */
+        .admin-workspace {
+            flex: 1;
+            padding: 50px 5%;
+            overflow-y: auto;
+        }
+
+        .workspace-panel {
+            display: none;
+        }
+
+        .workspace-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Grid analytics cards */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .analytic-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 30px 25px;
+            border-radius: 0;
+            text-align: left;
+            position: relative;
+        }
+
+        .analytic-card h3 {
+            font-size: 11px;
+            color: var(--text-soft);
+            letter-spacing: 2px;
+            font-family: 'Syne', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .analytic-card .value {
+            font-size: 2.2rem;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .analytic-card i {
+            position: absolute;
+            right: 25px;
+            bottom: 25px;
+            font-size: 30px;
+            color: rgba(212, 175, 55, 0.15);
+        }
+
+        /* Luxury Forms elements */
+        .form-group {
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--glass-border);
+            padding: 15px;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .form-control:focus {
+            border-color: var(--gold);
+        }
+
+        /* Premium table design */
+        .luxury-table-container {
+            overflow-x: auto;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            margin-top: 20px;
+        }
+
+        .luxury-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .luxury-table th {
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 18px 20px;
+            font-family: 'Syne', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .luxury-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 18px 20px;
+            font-size: 13px;
+        }
+
+        .luxury-table tr:hover {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Status Pills */
+        .badge {
+            padding: 5px 12px;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .badge-pending {
+            background: #d4af37;
+            color: #000;
+        }
+
+        .badge-accepted {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .badge-completed {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .badge-payment-collected {
+            background: #e5c158;
+            color: #000;
+        }
+
+        /* Action elements styling */
+        .btn-action {
+            padding: 6px 12px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: 1px solid var(--glass-border);
+            background: transparent;
+            color: #fff;
+            transition: var(--transition);
+        }
+
+        .btn-action.btn-accept:hover {
+            background: #28a745;
+            border-color: #28a745;
+            color: #fff;
+        }
+
+        .btn-action.btn-complete:hover {
+            background: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-action.btn-delete:hover {
+            background: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+        }
+
+        /* Dialogs and popups */
+        .toast-notify {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--gold);
+            color: #000;
+            padding: 15px 30px;
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            box-shadow: var(--gold-glow);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.4s ease;
+        }
+
+        .toast-notify.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Dynamic image selector frame */
+        .image-selector-frame {
+            border: 2px dashed var(--glass-border);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 15px;
+        }
+
+        .image-selector-frame:hover {
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .image-selector-preview {
+            max-width: 100%;
+            height: 150px;
+            object-fit: cover;
+            margin-top: 15px;
+            display: none;
+            border: 1px solid var(--glass-border);
+        }
+
+        @media (max-width: 900px) {
+            .admin-container {
+                flex-direction: column;
+            }
+
+            .admin-sidebar {
+                width: auto;
+                padding: 20px;
+                flex-direction: row;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top admin navigation bar -->
+    <nav class="admin-nav">
+        <div class="admin-logo">
+            <h1 class="glow-text-white">VP.<span>CONTROL</span></h1>
+        </div>
+        <div>
+            <span
+                style="font-size: 11px; letter-spacing: 2px; color: var(--gold); font-weight: 800; margin-right: 20px;">SYSTEM
+                STATUS: ONLINE</span>
+            <button onclick="logoutAdmin()" class="btn-bold"
+                style="padding: 8px 18px; font-size: 10px; background: transparent; border-color: #dc3545; color: #dc3545;">LOGOUT</button>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Sidebar items tab control -->
+        <div class="admin-sidebar">
+            <button class="tab-btn active" onclick="switchTab(event, 'overview')"><i class="fas fa-chart-line"></i>
+                OVERVIEW</button>
+            <button class="tab-btn" onclick="switchTab(event, 'hero-contact')"><i class="fas fa-home"></i> HERO &
+                CONTACT</button>
+            <button class="tab-btn" onclick="switchTab(event, 'services')"><i class="fas fa-cut"></i> SERVICES</button>
+            <button class="tab-btn" onclick="switchTab(event, 'gallery')"><i class="fas fa-images"></i> GALLERY</button>
+            <button class="tab-btn" onclick="switchTab(event, 'testimonials-team')"><i class="fas fa-users"></i> TESTIMONIALS &
+                TEAM</button>
+            <button class="tab-btn" onclick="switchTab(event, 'blogs-faqs')"><i class="fas fa-newspaper"></i> BLOGS &
+                FAQS</button>
+            <button class="tab-btn" onclick="switchTab(event, 'pricing')"><i class="fas fa-tags"></i> PACKAGES</button>
+            <button class="tab-btn" onclick="switchTab(event, 'backup')"><i class="fas fa-database"></i> BACKUP &
+                RESTORE</button>
+            <button class="tab-btn" onclick="switchTab(event, 'system-config')"><i class="fas fa-cog"></i> SYSTEM
+                CONFIG</button>
+            <button class="tab-btn" onclick="switchTab(event, 'account-security')"><i class="fas fa-user-shield"></i> ACCOUNT &
+                SECURITY</button>
+        </div>
+
+        <!-- Workspace viewport panels -->
+        <div class="admin-workspace">
+
+            <!-- PANEL: OVERVIEW -->
+            <div id="panel-overview" class="workspace-panel active">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">
+                    OVERVIEW.</h2>
+                <div class="analytics-grid">
+                    <div class="analytic-card">
+                        <h3>TOTAL SERVICES</h3>
+                        <div class="value" id="stats-services">0</div>
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <div class="analytic-card">
+                        <h3>GALLERY IMAGES</h3>
+                        <div class="value" id="stats-gallery">0</div>
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <div class="analytic-card">
+                        <h3>BOOKINGS</h3>
+                        <div class="value" id="stats-bookings">0</div>
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="analytic-card">
+                        <h3>CUSTOMER INQUIRIES</h3>
+                        <div class="value" id="stats-inquiries">0</div>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+
+                <h3 class="glow-text-gold"
+                    style="font-size: 1.3rem; font-family:'Syne'; margin-top:50px; margin-bottom: 20px;">LATEST
+                    APPOINTMENT BOOKINGS</h3>
+                <div class="luxury-table-container">
+                    <table class="luxury-table">
+                        <thead>
+                            <tr>
+                                <th>BOOKING ID</th>
+                                <th>CLIENT NAME</th>
+                                <th>PHONE</th>
+                                <th>SERVICE</th>
+                                <th>DATE / TIME</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="glow-text-gold"
+                    style="font-size: 1.3rem; font-family:'Syne'; margin-top:50px; margin-bottom: 20px;">CUSTOMER
+                    INQUIRIES</h3>
+                <div class="luxury-table-container">
+                    <table class="luxury-table">
+                        <thead>
+                            <tr>
+                                <th>INQ ID</th>
+                                <th>NAME</th>
+                                <th>EMAIL</th>
+                                <th>MESSAGE</th>
+                                <th>READ STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inquiries-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PANEL: HERO & CONTACT -->
+            <div id="panel-hero-contact" class="workspace-panel">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">HERO &
+                    CONTACT MANAGEMENT.</h2>
+                <form onsubmit="saveHeroContact(event)" class="glass-panel"
+                    style="padding: 40px; border: 1px solid var(--glass-border);">
+                    <h3 class="glow-text-gold" style="font-size: 1.2rem; font-family:'Syne'; margin-bottom: 25px;">HERO
+                        SECTION HEADINGS</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label>Title Line 1</label>
+                            <input type="text" id="hero-l1" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Title Line 2</label>
+                            <input type="text" id="hero-l2" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Title Line 3</label>
+                            <input type="text" id="hero-l3" required class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Subheading Title Text</label>
+                        <input type="text" id="hero-sub" required class="form-control">
+                    </div>
+
+                    <h3 class="glow-text-gold"
+                        style="font-size: 1.2rem; font-family:'Syne'; margin-top: 40px; margin-bottom: 25px;">BUSINESS
+                        CONTACT CHANNELS</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label>Contact Phone Number</label>
+                            <input type="text" id="contact-phone" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Inquiry Email Address</label>
+                            <input type="email" id="contact-email" required class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Physical Address Location</label>
+                        <input type="text" id="contact-address" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Operation Schedule Hours</label>
+                        <input type="text" id="contact-hours" required class="form-control">
+                    </div>
+
+                    <button type="submit" class="btn-bold glow-button"
+                        style="margin-top: 20px; padding: 15px 40px;">SAVE SYSTEM DETAILS</button>
+                </form>
+            </div>
+
+            <!-- PANEL: SERVICES -->
+            <div id="panel-services" class="workspace-panel">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">SERVICES
+                    SYSTEM.</h2>
+                <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 30px;">
+                    <p style="color:var(--text-soft)">Add, edit, or delete dynamic SEO parlor services.</p>
+                    <button class="btn-bold" onclick="openServiceForm()" style="padding: 10px 25px;"><i
+                            class="fas fa-plus"></i> ADD NEW SERVICE</button>
+                </div>
+
+                <!-- Form Section for Adding/Editing services -->
+                <div id="service-form-container" class="glass-panel"
+                    style="display:none; padding: 40px; border: 1px solid var(--glass-border); margin-bottom: 40px;">
+                    <h3 id="service-form-title" class="glow-text-gold"
+                        style="font-size: 1.3rem; font-family:'Syne'; margin-bottom: 25px;">NEW SERVICES REGISTRY</h3>
+                    <form onsubmit="saveService(event)">
+                        <input type="hidden" id="service-id">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Service Title</label>
+                                <input type="text" id="service-title" required class="form-control"
+                                    onkeyup="document.getElementById('service-slug').value = this.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')">
+                            </div>
+                            <div class="form-group">
+                                <label>SEO Path Slug</label>
+                                <input type="text" id="service-slug" required class="form-control" readonly>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Starting Price (e.g. $40+)</label>
+                                <input type="text" id="service-price" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Font Awesome Icon (e.g. fas fa-cut)</label>
+                                <input type="text" id="service-icon" required class="form-control"
+                                    placeholder="fas fa-cut">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>General Description</label>
+                            <textarea id="service-desc" required rows="3" class="form-control"
+                                style="resize:none;"></textarea>
+                        </div>
+
+                        <!-- Benefits Tags -->
+                        <div class="form-group">
+                            <label>Benefits (One item per line)</label>
+                            <textarea id="service-benefits" required rows="4" class="form-control"
+                                placeholder="Bespoke texture mapping&#10;Premium scale cleanse"></textarea>
+                        </div>
+
+                        <!-- Banner and transformation images base64 media uploads -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Banner Image (Cover Header)</label>
+                                <div class="image-selector-frame" onclick="triggerImageFile('service-banner-file')">
+                                    <span style="font-size:11px;">CHOOSE IMAGE</span>
+                                    <input type="file" id="service-banner-file" accept="image/*" style="display:none;"
+                                        onchange="handleImageCompress(this, 'service-banner-val', 'service-banner-preview')">
+                                    <input type="hidden" id="service-banner-val">
+                                    <img id="service-banner-preview" class="image-selector-preview">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Transformation Image [BEFORE]</label>
+                                <div class="image-selector-frame" onclick="triggerImageFile('service-before-file')">
+                                    <span style="font-size:11px;">CHOOSE IMAGE</span>
+                                    <input type="file" id="service-before-file" accept="image/*" style="display:none;"
+                                        onchange="handleImageCompress(this, 'service-before-val', 'service-before-preview')">
+                                    <input type="hidden" id="service-before-val">
+                                    <img id="service-before-preview" class="image-selector-preview">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Transformation Image [AFTER]</label>
+                                <div class="image-selector-frame" onclick="triggerImageFile('service-after-file')">
+                                    <span style="font-size:11px;">CHOOSE IMAGE</span>
+                                    <input type="file" id="service-after-file" accept="image/*" style="display:none;"
+                                        onchange="handleImageCompress(this, 'service-after-val', 'service-after-preview')">
+                                    <input type="hidden" id="service-after-val">
+                                    <img id="service-after-preview" class="image-selector-preview">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQs list strings -->
+                        <div class="form-group" style="margin-top:20px;">
+                            <label>Service Accordion FAQs (Formatted as Q: Question | A: Answer on separate
+                                lines)</label>
+                            <textarea id="service-faqs" rows="4" class="form-control"
+                                placeholder="Q: How long? | A: 30 minutes.&#10;Q: Olaplex used? | A: Yes, bond protect integrated."></textarea>
+                        </div>
+
+                        <div style="display:flex; gap:15px; margin-top:30px;">
+                            <button type="submit" class="btn-bold glow-button" style="padding:15px 35px;">REGISTER
+                                SERVICE</button>
+                            <button type="button" class="btn-bold" onclick="closeServiceForm()"
+                                style="background:transparent; padding:15px 35px;">CANCEL</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="luxury-table-container">
+                    <table class="luxury-table">
+                        <thead>
+                            <tr>
+                                <th>ICON</th>
+                                <th>SERVICE NAME</th>
+                                <th>SEO SLUG</th>
+                                <th>PRICE</th>
+                                <th>BENEFITS ITEMS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="services-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PANEL: GALLERY -->
+            <div id="panel-gallery" class="workspace-panel">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">
+                    CINEMATIC GALLERY.</h2>
+                <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 30px;">
+                    <p style="color:var(--text-soft)">Add, edit, or delete luxury photo items.</p>
+                    <button class="btn-bold" onclick="openGalleryForm()" style="padding: 10px 25px;"><i
+                            class="fas fa-plus"></i> ADD PHOTO</button>
+                </div>
+
+                <!-- Form Section for Adding gallery image -->
+                <div id="gallery-form-container" class="glass-panel"
+                    style="display:none; padding: 40px; border: 1px solid var(--glass-border); margin-bottom: 40px;">
+                    <h3 class="glow-text-gold" style="font-size: 1.3rem; font-family:'Syne'; margin-bottom: 25px;">
+                        GALLERY PHOTO REGISTRY</h3>
+                    <form onsubmit="saveGalleryItem(event)">
+                        <input type="hidden" id="gallery-id">
+                        <div class="form-group">
+                            <label>Image Title</label>
+                            <input type="text" id="gallery-title" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Aesthetic Category</label>
+                            <select id="gallery-category" class="form-control" style="background:#0a0a0a;">
+                                <option value="bridal">BRIDAL</option>
+                                <option value="styling">STYLING & HAIR</option>
+                                <option value="skin">SKIN TREATMENT</option>
+                                <option value="academy">ACADEMY & TRAINING</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload High-Res Photo</label>
+                            <div class="image-selector-frame" onclick="triggerImageFile('gallery-photo-file')">
+                                <span style="font-size:11px;">CHOOSE IMAGE</span>
+                                <input type="file" id="gallery-photo-file" accept="image/*" style="display:none;"
+                                    onchange="handleImageCompress(this, 'gallery-photo-val', 'gallery-photo-preview')">
+                                <input type="hidden" id="gallery-photo-val">
+                                <img id="gallery-photo-preview" class="image-selector-preview">
+                            </div>
+                        </div>
+
+                        <div style="display:flex; gap:15px; margin-top:30px;">
+                            <button type="submit" class="btn-bold glow-button" style="padding:15px 35px;">SAVE
+                                PHOTO</button>
+                            <button type="button" class="btn-bold" onclick="closeGalleryForm()"
+                                style="background:transparent; padding:15px 35px;">CANCEL</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="luxury-table-container">
+                    <table class="luxury-table">
+                        <thead>
+                            <tr>
+                                <th>PHOTO PREVIEW</th>
+                                <th>TITLE</th>
+                                <th>CATEGORY</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gallery-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PANEL: TESTIMONIALS & TEAM -->
+            <div id="panel-testimonials-team" class="workspace-panel">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">
+                    TESTIMONIALS & TEAM.</h2>
+
+                <div
+                    style="display:flex; justify-content: space-between; align-items:center; margin-top: 40px; margin-bottom: 20px;">
+                    <h3 class="glow-text-gold" style="font-size: 1.3rem; font-family:'Syne';">CLIENT TESTIMONIALS</h3>
+                    <button class="btn-bold" onclick="openTestimonialForm()"
+                        style="padding: 8px 18px; font-size:10px;"><i class="fas fa-plus"></i> ADD REVIEWS</button>
+                </div>
+
+                <div id="testimonial-form-container" class="glass-panel"
+                    style="display:none; padding:40px; border:1px solid var(--glass-border); margin-bottom:40px;">
+                    <form onsubmit="saveTestimonial(event)">
+                        <input type="hidden" id="test-id">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                            <div class="form-group">
+                                <label>Client Name</label>
+                                <input type="text" id="test-name" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Designation / Role</label>
+                                <input type="text" id="test-role" required class="form-control"
+                                    placeholder="Luxury Bride">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Rating (1 to 5 Stars)</label>
+                            <input type="number" id="test-rating" min="1" max="5" value="5" required
+                                class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Review Description</label>
+                            <textarea id="test-review" required rows="3" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn-bold glow-button">SAVE TESTIMONIAL</button>
+                        <button type="button" class="btn-bold" onclick="closeTestimonialForm()"
+                            style="background:transparent;">CANCEL</button>
+                    </form>
+                </div>
+
+                <div class="luxury-table-container">
+                    <table class="luxury-table">
+                        <thead>
+                            <tr>
+                                <th>CLIENT</th>
+                                <th>ROLE</th>
+                                <th>RATING</th>
+                                <th>REVIEW</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="testimonials-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div
+                    style="display:flex; justify-content: space-between; align-items:center; margin-top: 60px; margin-bottom: 20px;">
+                    <h3 class="glow-text-gold" style="font-size: 1.3rem; font-family:'Syne';">SALON TEAM GRID</h3>
+                    <button class="btn-bold" onclick="openTeamForm()" style="padding: 8px 18px; font-size:10px;"><i
+                            class="fas fa-plus"></i> ADD EXPERT</button>
+                </div>
+
+                <div id="team-form-container" class="glass-panel"
+                    style="display:none; padding:40px; border:1px solid var(--glass-border); margin-bottom:40px;">
+                    <form onsubmit="saveTeamMember(event)">
+                        <input type="hidden" id="team-id">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                            <div class="form-group">
+                                <label>Expert Stylist Name</label>
+                                <input type="text" id="team-name" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Professional Role</label>
+                                <input type="text" id="team-role" required class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Stylist Headshot</label>
+                            <div class="image-selector-frame" onclick="triggerImageFile('team-image-file')">
+                                <span style="font-size:11px;">CHOOSE IMAGE</span>
+                                <input type="file" id="team-image-file" accept="image/*" style="display:none;"
+                                    onchange="handleImageCompress(this, 'team-image-val', 'team-image-preview')">
+                                <input type="hidden" id="team-image-val">
+                                <img id="team-image-preview" class="image-selector-preview">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-bold glow-button">SAVE EXPERT</button>
+                        <button type="button" class="btn-bold" onclick="closeTeamForm()"
+                            style="background:transparent;">CANCEL</button>
+                    </form>
+                </div>
+
+                <div class="luxury-table-container">
+                    <table class="luxury-table">
+                        <thead>
+                            <tr>
+                                <th>HEADSHOT PREVIEW</th>
+                                <th>NAME</th>
+                                <th>ROLE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="team-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PANEL: BLOGS & FAQS -->
+            <div id="panel-blogs-faqs" class="workspace-panel">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">NEWS
+                    BLOGS & FAQS.</h2>
+
+                <div
+                    style="display:flex; justify-content: space-between; align-items:center; margin-top: 40px; margin-bottom: 20px;">
+                    <h3 class="glow-text-gold" style="font-size: 1.3rem; font-family:'Syne';">BLOG & NEWS POSTS</h3>
+                    <button class="btn-bold" onclick="openBlogForm()" style="padding: 8px 18px; font-size:10px;"><i
+                            class="fas fa-plus"></i> NEW BLOG</button>
+                </div>
+
+                <div id="blog-form-container" class="glass-panel"
+                    style="display:none; padding:40px; border:1px solid var(--glass-border); margin-bottom:40px;">
+                    <form onsubmit="saveBlogPost(event)">
+                        <input type="hidden" id="blog-id">
+                        <div class="form-group">
+                            <label>Blog Title</label>
+                            <input type="text" id="blog-title" required class="form-control"
+                                onkeyup="document.getElementById('blog-slug').value = this.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')">
+                        </div>
+                        <div class="form-group">
+                            <label>Slug path</label>
+                            <input type="text" id="blog-slug" required class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Post Body Content</label>
+                            <textarea id="blog-content" required rows="6" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Feature Cover Image</label>
+                            <div class="image-selector-frame" onclick="triggerImageFile('blog-image-file')">
+                                <span style="font-size:11px;">CHOOSE IMAGE</span>
+                                <input type="file" id="blog-image-file" accept="image/*" style="display:none;"
+                                    onchange="handleImageCompress(this, 'blog-image-val', 'blog-image-preview')">
+                                <input type="hidden" id="blog-image-val">
+                                <img id="blog-image-preview" class="image-selector-preview">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-bold glow-button">POST BLOG</button>
+                        <button type="button" class="btn-bold" onclick="closeBlogForm()"
+                            style="background:transparent;">CANCEL</button>
+                    </form>
+                </div>
+
+                <div class="luxury-table-container">
+                    <table class="luxury-table">
+                        <thead>
+                            <tr>
+                                <th>IMAGE</th>
+                                <th>TITLE</th>
+                                <th>SLUG</th>
+                                <th>DATE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blogs-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div
+                    style="display:flex; justify-content: space-between; align-items:center; margin-top: 60px; margin-bottom: 20px;">
+                    <h3 class="glow-text-gold" style="font-size: 1.3rem; font-family:'Syne';">GENERAL ACADEMY / SALON
+                        FAQS</h3>
+                    <button class="btn-bold" onclick="openFAQForm()" style="padding: 8px 18px; font-size:10px;"><i
+                            class="fas fa-plus"></i> NEW FAQ</button>
+                </div>
+
+                <div id="faq-form-container" class="glass-panel"
+                    style="display:none; padding:40px; border:1px solid var(--glass-border); margin-bottom:40px;">
+                    <form onsubmit="saveFAQ(event)">
+                        <input type="hidden" id="faq-id">
+                        <div class="form-group">
+                            <label>Question text</label>
+                            <input type="text" id="faq-question" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Answer text details</label>
+                            <textarea id="faq-answer" required rows="3" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn-bold glow-button">SAVE FAQ</button>
+                        <button type="button" class="btn-bold" onclick="closeFAQForm()"
+                            style="background:transparent;">CANCEL</button>
+                    </form>
+                </div>
+
+                <div class="luxury-table-container">
+                    <table class="luxury-table">
+                        <thead>
+                            <tr>
+                                <th>QUESTION</th>
+                                <th>ANSWER DETAILS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="faqs-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PANEL: PRICING -->
+            <div id="panel-pricing" class="workspace-panel">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">PRICING
+                    PACKAGES.</h2>
+                <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 30px;">
+                    <p style="color:var(--text-soft)">Add, edit, or delete dynamic pricing package tiers.</p>
+                    <button class="btn-bold" onclick="openPricingForm()" style="padding: 10px 25px;"><i
+                            class="fas fa-plus"></i> ADD NEW PACKAGE</button>
+                </div>
+
+                <div id="pricing-form-container" class="glass-panel"
+                    style="display:none; padding: 40px; border: 1px solid var(--glass-border); margin-bottom: 40px;">
+                    <form onsubmit="savePricingPackage(event)">
+                        <input type="hidden" id="pricing-id">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Package Name</label>
+                                <input type="text" id="pricing-name" required class="form-control"
+                                    placeholder="BRONZE ESSENTIALS">
+                            </div>
+                            <div class="form-group">
+                                <label>Package Price (e.g. $45)</label>
+                                <input type="text" id="pricing-val" required class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Package Tier Popularity Glow</label>
+                            <select id="pricing-popular" class="form-control" style="background:#0a0a0a;">
+                                <option value="false">STANDARD FLAT DESIGN</option>
+                                <option value="true">GOLD GLOW CARD [POPULAR]</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Features (One feature item per line)</label>
+                            <textarea id="pricing-features" required rows="4" class="form-control"
+                                placeholder="Precision Cut&#10;Premium Wash"></textarea>
+                        </div>
+                        <div style="display:flex; gap:15px; margin-top:30px;">
+                            <button type="submit" class="btn-bold glow-button" style="padding:15px 35px;">SAVE
+                                PACKAGE</button>
+                            <button type="button" class="btn-bold" onclick="closePricingForm()"
+                                style="background:transparent; padding:15px 35px;">CANCEL</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="luxury-table-container">
+                    <table class="luxury-table">
+                        <thead>
+                            <tr>
+                                <th>PACKAGE NAME</th>
+                                <th>PRICE</th>
+                                <th>POPULARITY</th>
+                                <th>FEATURES LIST</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pricing-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PANEL: BACKUP & RESTORE -->
+            <div id="panel-backup" class="workspace-panel">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">SYSTEM
+                    BACKUP & RESTORE.</h2>
+                <p style="color: var(--text-soft); line-height:1.6; margin-bottom: 40px;">
+                    Keep your entire website safe and portable. Export a snapshot backup file of the full text
+                    configurations, dynamic parlor products, custom categories, testimonials reviews, blogs, and FAQ
+                    accordions. In case of migration or edits, easily restore using the exported file.
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                    <!-- Backup export button -->
+                    <div class="glass-panel"
+                        style="padding: 40px; border: 1px solid var(--glass-border); text-align: center;">
+                        <i class="fas fa-download"
+                            style="font-size: 3rem; color: var(--gold); margin-bottom: 20px;"></i>
+                        <h3 class="glow-text-white" style="font-size: 1.2rem; margin-bottom: 15px;">EXPORT CURRENT STATE
+                        </h3>
+                        <p style="font-size: 12px; color: var(--text-soft); margin-bottom: 30px;">Download your active
+                            data configurations as a JSON database snapshot.</p>
+                        <a href="/api/admin/backup" class="btn-bold glow-button magnetic"
+                            style="display: inline-block;">DOWNLOAD BACKUP</a>
+                    </div>
+
+                    <!-- Backup restore file drop zone -->
+                    <div class="glass-panel"
+                        style="padding: 40px; border: 1px solid var(--glass-border); text-align: center;">
+                        <i class="fas fa-upload" style="font-size: 3rem; color: #007bff; margin-bottom: 20px;"></i>
+                        <h3 class="glow-text-white" style="font-size: 1.2rem; margin-bottom: 15px;">RESTORE DATABASE
+                            SNAPSHOT</h3>
+                        <p style="font-size: 12px; color: var(--text-soft); margin-bottom: 30px;">Restore the website
+                            system configurations by uploading a backup file.</p>
+
+                        <div class="image-selector-frame" onclick="triggerImageFile('restore-db-file')"
+                            style="padding:15px; border-style:dashed;">
+                            <span style="font-size:10px;">CLICK TO CHOOSE BACKUP JSON</span>
+                            <input type="file" id="restore-db-file" accept=".json" style="display:none;"
+                                onchange="restoreBackup(this)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: SYSTEM CONFIG -->
+            <div id="panel-system-config" class="workspace-panel">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">SYSTEM
+                    CONFIGURATIONS.</h2>
+                <p style="color: var(--text-soft); line-height:1.6; margin-bottom: 40px;">
+                    Configure dynamic administrative engines like SMTP Email Transporters for invoices and real-time
+                    Firebase Sync rules.
+                </p>
+
+                <form onsubmit="saveSystemConfigs(event)">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px;">
+
+                        <!-- Col 1: SMTP Transporter -->
+                        <div class="glass-panel" style="padding: 40px; border: 1px solid var(--glass-border);">
+                            <h3 class="glow-text-gold"
+                                style="font-size: 1.2rem; font-family:'Syne'; margin-bottom: 25px;"><i
+                                    class="fas fa-paper-plane" style="margin-right: 10px;"></i> SMTP EMAIL TRANSMITTER
+                            </h3>
+
+                            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>SMTP Host</label>
+                                    <input type="text" id="smtp-host" class="form-control" placeholder="smtp.gmail.com"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label>SMTP Port</label>
+                                    <input type="number" id="smtp-port" class="form-control" placeholder="587" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Secure Connection</label>
+                                <select id="smtp-secure" class="form-control" style="background:#0a0a0a;">
+                                    <option value="false">STARTTLS (PORT 587 / 25)</option>
+                                    <option value="true">SSL (PORT 465)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>SMTP Authentication User</label>
+                                <input type="email" id="smtp-user" class="form-control" placeholder="yourname@gmail.com"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>SMTP Authentication Password</label>
+                                <input type="password" id="smtp-pass" class="form-control"
+                                    placeholder="Gmail App Password" required>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Sender Display Name</label>
+                                    <input type="text" id="smtp-from-name" class="form-control"
+                                        placeholder="VICKY PARLOUR" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Sender Email Address</label>
+                                    <input type="email" id="smtp-from-email" class="form-control"
+                                        placeholder="yourname@gmail.com" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Col 2: Firebase Firestore Integration -->
+                        <div class="glass-panel" style="padding: 40px; border: 1px solid var(--glass-border);">
+                            <h3 class="glow-text-gold"
+                                style="font-size: 1.2rem; font-family:'Syne'; margin-bottom: 25px;"><i
+                                    class="fab fa-google" style="margin-right: 10px;"></i> FIREBASE ADMIN SYNC</h3>
+
+                            <div class="form-group">
+                                <label>Firebase Project ID</label>
+                                <input type="text" id="fb-project-id" class="form-control"
+                                    placeholder="vicky-parlour-firebase">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Firebase Client Email</label>
+                                <input type="text" id="fb-client-email" class="form-control"
+                                    placeholder="firebase-adminsdk@vicky-parlour.iam.gserviceaccount.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Firebase Private Key</label>
+                                <textarea id="fb-private-key" class="form-control" rows="8"
+                                    placeholder="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+                                    style="font-family: monospace; font-size: 10px; line-height: 1.4;"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button type="submit" class="btn-bold glow-button magnetic"
+                            style="padding: 18px 50px; font-size: 11px;"><i class="fas fa-save"
+                                style="margin-right: 10px;"></i> SAVE DYNAMIC CONFIGURATIONS</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- PANEL: ACCOUNT & SECURITY -->
+            <div id="panel-account-security" class="workspace-panel">
+                <h2 class="glow-text-white" style="font-size: 2.2rem; font-family:'Syne'; margin-bottom: 30px;">ACCOUNT & SECURITY.</h2>
+                <p style="color: var(--text-soft); line-height:1.6; margin-bottom: 40px;">
+                    Update admin settings, modify password credentials, inspect active sessions, and review recent audit activity logs.
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px;">
+
+                    <!-- Col 1: Account Settings & Recovery Email -->
+                    <div class="glass-panel" style="padding: 40px; border: 1px solid var(--glass-border);">
+                        <h3 class="glow-text-gold" style="font-size: 1.2rem; font-family:'Syne'; margin-bottom: 25px;">
+                            <i class="fas fa-user-edit" style="margin-right: 10px;"></i> ACCOUNT PROFILE
+                        </h3>
+                        <form onsubmit="saveAccountSettings(event)">
+                            <div class="form-group">
+                                <label>Admin Username</label>
+                                <input type="text" id="admin-username-input" class="form-control" placeholder="vicky" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Recovery Email Address</label>
+                                <input type="email" id="admin-email-input" class="form-control" placeholder="recovery@vickyparlour.com" required>
+                            </div>
+                            <button type="submit" class="btn-bold magnetic" style="width: 100%; margin-top: 20px; padding: 12px; font-size: 10px;">UPDATE PROFILE</button>
+                        </form>
+                    </div>
+
+                    <!-- Col 2: Change Password -->
+                    <div class="glass-panel" style="padding: 40px; border: 1px solid var(--glass-border);">
+                        <h3 class="glow-text-gold" style="font-size: 1.2rem; font-family:'Syne'; margin-bottom: 25px;">
+                            <i class="fas fa-key" style="margin-right: 10px;"></i> CHANGE PASSWORD
+                        </h3>
+                        <form onsubmit="updatePassword(event)">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" id="admin-current-password" class="form-control" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" id="admin-new-password" class="form-control" placeholder="MIN 5 CHARACTERS" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="admin-confirm-password" class="form-control" placeholder="RE-ENTER PASSWORD" required>
+                            </div>
+                            <button type="submit" class="btn-bold magnetic" style="width: 100%; margin-top: 20px; padding: 12px; font-size: 10px;">CHANGE PASSWORD</button>
+                        </form>
+                    </div>
+
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px;">
+
+                    <!-- Col 3: Security Configuration & revocation -->
+                    <div class="glass-panel" style="padding: 40px; border: 1px solid var(--glass-border); display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h3 class="glow-text-gold" style="font-size: 1.2rem; font-family:'Syne'; margin-bottom: 25px;">
+                                <i class="fas fa-shield-alt" style="margin-right: 10px;"></i> SECURITY CONFIGURATION
+                            </h3>
+                            <form onsubmit="saveSecuritySettings(event)" id="security-config-form">
+                                <div class="form-group">
+                                    <label>Authentication Protection Status</label>
+                                    <select id="admin-protection-input" class="form-control" style="background:#0a0a0a;">
+                                        <option value="false">STANDARD SESSION CONTROL</option>
+                                        <option value="true">PROTECTED ACTIVE AUDITING</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-bold magnetic" style="width: 100%; margin-top: 20px; padding: 12px; font-size: 10px;">SAVE CONFIG</button>
+                            </form>
+                        </div>
+                        <div style="margin-top: 40px; border-top: 1px solid var(--glass-border); padding-top: 30px;">
+                            <h4 style="font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #dc3545; margin-bottom: 10px;">GLOBAL SESSION REVOCATION</h4>
+                            <p style="font-size: 11px; color: var(--text-soft); margin-bottom: 20px;">Forcefully terminate all active admin sessions and log out from all devices.</p>
+                            <button onclick="logoutAllSessions()" class="btn-bold magnetic" style="width: 100%; padding: 12px; font-size: 10px; background: transparent; border-color: #dc3545; color: #dc3545;">TERMINATE ALL SESSIONS</button>
+                        </div>
+                    </div>
+
+                    <!-- Col 4: Active Login Devices (Sessions) -->
+                    <div class="glass-panel" style="padding: 40px; border: 1px solid var(--glass-border);">
+                        <h3 class="glow-text-gold" style="font-size: 1.2rem; font-family:'Syne'; margin-bottom: 25px;">
+                            <i class="fas fa-desktop" style="margin-right: 10px;"></i> ACTIVE LOGIN DEVICES
+                        </h3>
+                        <div style="overflow-x: auto;">
+                            <table class="admin-table" style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left; padding: 10px; color: var(--text-soft); font-size: 10px; font-weight:800;">DEVICE / IP</th>
+                                        <th style="text-align: left; padding: 10px; color: var(--text-soft); font-size: 10px; font-weight:800;">LOGIN TIME</th>
+                                        <th style="text-align: left; padding: 10px; color: var(--text-soft); font-size: 10px; font-weight:800;">EXPIRATION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="active-sessions-body">
+                                    <!-- Dynamic rows loaded via js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Row 3: Login Activity Log Audits -->
+                <div class="glass-panel" style="padding: 40px; border: 1px solid var(--glass-border); margin-bottom: 40px;">
+                    <h3 class="glow-text-gold" style="font-size: 1.2rem; font-family:'Syne'; margin-bottom: 25px;">
+                        <i class="fas fa-history" style="margin-right: 10px;"></i> RECENT LOGIN ATTEMPTS (AUDIT LOGS)
+                    </h3>
+                    <div style="overflow-x: auto; max-height: 250px; overflow-y: auto;">
+                        <table class="admin-table" style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left; padding: 12px; color: var(--text-soft); font-size: 10px; font-weight:800;">TIMESTAMP</th>
+                                    <th style="text-align: left; padding: 12px; color: var(--text-soft); font-size: 10px; font-weight:800;">IP ADDRESS</th>
+                                    <th style="text-align: left; padding: 12px; color: var(--text-soft); font-size: 10px; font-weight:800;">STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="login-logs-body">
+                                <!-- Dynamic rows loaded via js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast alerts notification -->
+    <div id="toast-notify" class="toast-notify">SYSTEM CONFIGURATIONS SAVED SUCCESSFULLY</div>
+
+    <!-- Scripts -->
+    <script>
+        let dbState = {};
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // Security authorization check before rendering panels
+        async function verifyAuthentication() {
+            try {
+                const response = await fetch('/api/admin/check-auth');
+                const data = await response.json();
+                if (!data.authenticated) {
+                    // Send unauthorized hacker back to index
+                    window.location.href = '/index.html';
+                } else {
+                    // Fetch configurations
+                    fetchAdminData();
+                }
+            } catch (err) {
+                window.location.href = '/index.html';
+            }
+        }
+
+        async function logoutAdmin() {
+            try {
+                await fetch('/api/admin/logout', { method: 'POST' });
+                window.location.href = '/index.html';
+            } catch (e) { }
+        }
+
+        // Switch admin tabs workflow
+        function switchTab(e, tabId) {
+            const evt = e || window.event;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (evt && evt.currentTarget) {
+                evt.currentTarget.classList.add('active');
+            } else if (evt && evt.target) {
+                const btn = evt.target.closest('.tab-btn');
+                if (btn) btn.classList.add('active');
+            }
+
+            document.querySelectorAll('.workspace-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            const targetPanel = document.getElementById(`panel-${tabId}`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+        }
+
+        // Toast feedback alerts
+        function triggerToast(message) {
+            const toast = document.getElementById('toast-notify');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // File trigger helpers
+        function triggerImageFile(fileInputId) {
+            document.getElementById(fileInputId).click();
+        }
+
+        // Image compression resizer via HTML5 canvas
+        function handleImageCompress(inputEl, hiddenInputId, imgPreviewId) {
+            const file = inputEl.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 1200;
+                    const MAX_HEIGHT = 1200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.82);
+
+                    // Upload to uploads directory dynamically
+                    fetch('/api/admin/upload', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            filename: file.name,
+                            filetype: 'image/jpeg',
+                            base64data: compressedBase64
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.success) {
+                                document.getElementById(hiddenInputId).value = res.filepath;
+                                const preview = document.getElementById(imgPreviewId);
+                                preview.src = res.filepath;
+                                preview.style.display = 'block';
+                                triggerToast('IMAGE UPLOADED & COMPRESSED');
+                            } else {
+                                alert('Upload failed: ' + res.error);
+                            }
+                        })
+                        .catch(() => alert('Network error during upload compression.'));
+                }
+            }
+        }
+
+        // Fetch state data configurations from admin endpoints
+        async function fetchAdminData() {
+            try {
+                const res = await fetch('/api/admin/data');
+                dbState = await res.json();
+
+                renderOverview();
+                renderHeroContactForm();
+                renderServicesTable();
+                renderGalleryTable();
+                renderTestimonialsTable();
+                renderTeamTable();
+                renderBlogsTable();
+                renderFAQsTable();
+                renderPricingTable();
+                renderSystemConfigsForm();
+                renderAccountSecurityForm();
+            } catch (e) {
+                triggerToast('ERROR FETCHING ADMINISTRATIVE DATA.');
+            }
+        }
+
+        // ================= RENDERING WORKSPACES FUNCTIONS =================
+
+        function renderOverview() {
+            document.getElementById('stats-services').innerText = dbState.services.length;
+            document.getElementById('stats-gallery').innerText = dbState.gallery.length;
+            document.getElementById('stats-bookings').innerText = dbState.bookings ? dbState.bookings.length : 0;
+            document.getElementById('stats-inquiries').innerText = dbState.inquiries ? dbState.inquiries.length : 0;
+
+            // Render Bookings
+            const bookingsTable = document.getElementById('bookings-table-body');
+            const bookingsList = dbState.bookings || [];
+            if (bookingsList.length === 0) {
+                bookingsTable.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-soft);">NO SLOTS APPOINTMENTS BOOKED YET.</td></tr>`;
+            } else {
+                // Reverse to show latest first
+                bookingsTable.innerHTML = [...bookingsList].reverse().map(b => {
+                    const statusClass = b.status ? b.status.toLowerCase().replace(/\s+/g, '-') : 'pending';
+                    const isPaid = b.status === 'Payment Collected' || b.paymentCollected;
+
+                    let actionsHtml = '';
+                    if (b.status === 'pending') {
+                        actionsHtml += `<button onclick="updateBooking('${escapeHTML(b.id)}', 'accepted')" class="btn-action btn-accept">ACCEPT</button>`;
+                    }
+                    if (b.status === 'accepted') {
+                        actionsHtml += `<button onclick="updateBooking('${escapeHTML(b.id)}', 'completed')" class="btn-action btn-complete">COMPLETE</button>`;
+                    }
+                    if (!isPaid && (b.status === 'accepted' || b.status === 'completed')) {
+                        actionsHtml += `<button onclick="collectPayment('${escapeHTML(b.id)}')" class="btn-action" style="border-color:#d4af37; color:#d4af37; font-weight:bold;">COLLECT PAYMENT</button>`;
+                    }
+                    if (isPaid) {
+                        const inv = dbState.invoices ? dbState.invoices.find(invoice => invoice.bookingId === b.id) : null;
+                        const pdfUrl = inv ? inv.pdfUrl : (b.pdfUrl || '#');
+                        actionsHtml += `<a href="${escapeHTML(pdfUrl)}" target="_blank" class="btn-action" style="background:#d4af37; color:#000; border-color:#d4af37; text-decoration:none; font-weight:bold; display:inline-flex; align-items:center; justify-content:center; padding: 6px 12px; height: 26px; box-sizing: border-box;">DOWNLOAD PDF</a>`;
+                    }
+                    actionsHtml += `<button onclick="updateBooking('${escapeHTML(b.id)}', 'delete')" class="btn-action btn-delete">DELETE</button>`;
+
+                    return `
+                        <tr>
+                            <td style="font-family:'Syne'; font-weight:800; color:var(--gold);">${escapeHTML(b.id)}</td>
+                            <td>${escapeHTML(b.name).toUpperCase()}</td>
+                            <td>${escapeHTML(b.phone)}</td>
+                            <td>${escapeHTML(b.service).toUpperCase()}</td>
+                            <td>${escapeHTML(b.date)} / ${escapeHTML(b.time)}</td>
+                            <td><span class="badge badge-${statusClass}">${escapeHTML(b.status).toUpperCase()}</span></td>
+                            <td>
+                                <div style="display:flex; gap:8px; align-items:center;">
+                                    ${actionsHtml}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // Render Inquiries
+            const inquiriesTable = document.getElementById('inquiries-table-body');
+            const inquiriesList = dbState.inquiries || [];
+            if (inquiriesList.length === 0) {
+                inquiriesTable.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-soft);">NO CUSTOMER INQUIRIES RECEIVED YET.</td></tr>`;
+            } else {
+                inquiriesTable.innerHTML = [...inquiriesList].reverse().map(i => `
+                    <tr>
+                        <td style="font-family:'Syne'; font-weight:800; color:var(--gold);">${escapeHTML(i.id)}</td>
+                        <td>${escapeHTML(i.name).toUpperCase()}</td>
+                        <td>${escapeHTML(i.email).toUpperCase()}</td>
+                        <td>${escapeHTML(i.message)}</td>
+                        <td><span class="badge" style="background:${i.read ? '#28a745' : '#dc3545'}">${i.read ? 'READ' : 'NEW'}</span></td>
+                        <td>
+                            <div style="display:flex; gap:8px;">
+                                ${!i.read ? `<button onclick="updateInquiry('${escapeHTML(i.id)}', 'read')" class="btn-action btn-accept">MARK READ</button>` : ''}
+                                <button onclick="updateInquiry('${escapeHTML(i.id)}', 'delete')" class="btn-action btn-delete">DELETE</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        async function updateBooking(bookingId, status) {
+            try {
+                const res = await fetch(`/api/admin/bookings/${encodeURIComponent(bookingId)}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                if (res.ok) {
+                    triggerToast(`APPOINTMENT STATUS UPDATED`);
+                    fetchAdminData();
+                }
+            } catch (e) { }
+        }
+
+        async function updateInquiry(inquiryId, status) {
+            try {
+                const res = await fetch(`/api/admin/inquiries/${encodeURIComponent(inquiryId)}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                if (res.ok) {
+                    triggerToast(`INQUIRY STATUS UPDATED`);
+                    fetchAdminData();
+                }
+            } catch (e) { }
+        }
+
+        async function collectPayment(bookingId) {
+            const booking = dbState.bookings.find(b => b.id === bookingId);
+            if (!booking) return;
+
+            // Try to find the service price as default amount
+            let defaultPrice = "3499";
+            if (dbState.services) {
+                const srv = dbState.services.find(s => s.title.toUpperCase().trim() === booking.service.toUpperCase().trim());
+                if (srv && srv.price) {
+                    defaultPrice = srv.price.replace(/[^0-9]/g, '');
+                }
+            }
+
+            const amountStr = prompt(`ENTER THE COLLECTED PAYMENT AMOUNT (INR) FOR SERVICE: ${booking.service.toUpperCase()}`, defaultPrice);
+            if (amountStr === null) return; // User cancelled
+
+            const amount = parseInt(amountStr) || 0;
+
+            const emailStr = prompt(`ENTER OR CONFIRM CUSTOMER'S EMAIL FOR INVOICE DISPATCH:`, booking.email || '');
+            if (emailStr === null) return; // User cancelled
+            const customerEmail = emailStr.trim();
+
+            try {
+                const res = await fetch(`/api/admin/bookings/${encodeURIComponent(bookingId)}/collect-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount, email: customerEmail })
+                });
+                if (res.ok) {
+                    triggerToast(`PAYMENT COLLECTED & INVOICE GENERATED`);
+                    fetchAdminData();
+                } else {
+                    triggerToast(`FAILED TO PROCESS PAYMENT`);
+                }
+            } catch (e) {
+                triggerToast(`CONNECTION FAILURE WHILE COLLECTING PAYMENT`);
+            }
+        }
+
+        // Render Hero & Contact inputs
+        function renderHeroContactForm() {
+            if (dbState.hero) {
+                document.getElementById('hero-l1').value = dbState.hero.title_line1 || '';
+                document.getElementById('hero-l2').value = dbState.hero.title_line2 || '';
+                document.getElementById('hero-l3').value = dbState.hero.title_line3 || '';
+                document.getElementById('hero-sub').value = dbState.hero.subtitle || '';
+            }
+            if (dbState.contact) {
+                document.getElementById('contact-phone').value = dbState.contact.phone || '';
+                document.getElementById('contact-email').value = dbState.contact.email || '';
+                document.getElementById('contact-address').value = dbState.contact.address || '';
+                document.getElementById('contact-hours').value = dbState.contact.hours || '';
+            }
+        }
+
+        async function saveHeroContact(event) {
+            event.preventDefault();
+            dbState.hero = {
+                title_line1: document.getElementById('hero-l1').value,
+                title_line2: document.getElementById('hero-l2').value,
+                title_line3: document.getElementById('hero-l3').value,
+                subtitle: document.getElementById('hero-sub').value
+            };
+            dbState.contact = {
+                phone: document.getElementById('contact-phone').value,
+                email: document.getElementById('contact-email').value,
+                address: document.getElementById('contact-address').value,
+                hours: document.getElementById('contact-hours').value
+            };
+
+            await saveStateConfig('SYSTEM DETAILS SAVED SUCCESSFULLY.');
+        }
+
+        // ================= SERVICE FORM WORKFLOWS =================
+
+        function renderServicesTable() {
+            const tbody = document.getElementById('services-table-body');
+            tbody.innerHTML = dbState.services.map(s => `
+                <tr>
+                    <td style="font-size:1.5rem; color:var(--gold);"><i class="${s.icon || 'fas fa-cut'}"></i></td>
+                    <td style="font-family:'Syne'; font-weight:800;">${s.title}</td>
+                    <td>/services/${s.slug}</td>
+                    <td class="gold-text">${s.price}</td>
+                    <td>${s.benefits ? s.benefits.length : 0} items</td>
+                    <td>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="editService('${s.id}')" class="btn-action btn-accept">EDIT</button>
+                            <button onclick="deleteService('${s.id}')" class="btn-action btn-delete">DELETE</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openServiceForm() {
+            document.getElementById('service-id').value = '';
+            document.getElementById('service-title').value = '';
+            document.getElementById('service-slug').value = '';
+            document.getElementById('service-price').value = '';
+            document.getElementById('service-icon').value = 'fas fa-cut';
+            document.getElementById('service-desc').value = '';
+            document.getElementById('service-benefits').value = '';
+            document.getElementById('service-banner-val').value = '';
+            document.getElementById('service-before-val').value = '';
+            document.getElementById('service-after-val').value = '';
+            document.getElementById('service-faqs').value = '';
+
+            document.getElementById('service-banner-preview').style.display = 'none';
+            document.getElementById('service-before-preview').style.display = 'none';
+            document.getElementById('service-after-preview').style.display = 'none';
+
+            document.getElementById('service-form-title').innerText = 'NEW SERVICES REGISTRY';
+            document.getElementById('service-form-container').style.display = 'block';
+        }
+
+        function closeServiceForm() {
+            document.getElementById('service-form-container').style.display = 'none';
+        }
+
+        function editService(id) {
+            const s = dbState.services.find(ser => ser.id === id);
+            if (!s) return;
+
+            document.getElementById('service-id').value = s.id;
+            document.getElementById('service-title').value = s.title;
+            document.getElementById('service-slug').value = s.slug;
+            document.getElementById('service-price').value = s.price;
+            document.getElementById('service-icon').value = s.icon || 'fas fa-cut';
+            document.getElementById('service-desc').value = s.description;
+            document.getElementById('service-benefits').value = s.benefits ? s.benefits.join('\n') : '';
+
+            // Handle images inputs
+            document.getElementById('service-banner-val').value = s.banner_image || '';
+            const bannerPrev = document.getElementById('service-banner-preview');
+            if (s.banner_image) { bannerPrev.src = s.banner_image; bannerPrev.style.display = 'block'; }
+            else { bannerPrev.style.display = 'none'; }
+
+            document.getElementById('service-before-val').value = s.before_image || '';
+            const beforePrev = document.getElementById('service-before-preview');
+            if (s.before_image) { beforePrev.src = s.before_image; beforePrev.style.display = 'block'; }
+            else { beforePrev.style.display = 'none'; }
+
+            document.getElementById('service-after-val').value = s.after_image || '';
+            const afterPrev = document.getElementById('service-after-preview');
+            if (s.after_image) { afterPrev.src = s.after_image; afterPrev.style.display = 'block'; }
+            else { afterPrev.style.display = 'none'; }
+
+            // FAQ accordion formatted parsing
+            const faqLines = s.faqs ? s.faqs.map(f => `Q: ${f.q} | A: ${f.a}`).join('\n') : '';
+            document.getElementById('service-faqs').value = faqLines;
+
+            document.getElementById('service-form-title').innerText = 'EDIT PARLOR SERVICE DETAILS';
+            document.getElementById('service-form-container').style.display = 'block';
+        }
+
+        async function saveService(event) {
+            event.preventDefault();
+            const id = document.getElementById('service-id').value;
+            const title = document.getElementById('service-title').value;
+            const slug = document.getElementById('service-slug').value;
+            const price = document.getElementById('service-price').value;
+            const icon = document.getElementById('service-icon').value;
+            const description = document.getElementById('service-desc').value;
+            const benefits = document.getElementById('service-benefits').value.split('\n').map(b => b.trim()).filter(b => b.length > 0);
+
+            // Parse FAQs
+            const faqText = document.getElementById('service-faqs').value;
+            const faqs = faqText.split('\n').filter(line => line.includes('|')).map(line => {
+                const parts = line.split('|');
+                const qPart = parts[0].replace(/^Q:\s*/i, '').trim();
+                const aPart = parts[1].replace(/^A:\s*/i, '').trim();
+                return { q: qPart, a: aPart };
+            });
+
+            const banner_image = document.getElementById('service-banner-val').value;
+            const before_image = document.getElementById('service-before-val').value;
+            const after_image = document.getElementById('service-after-val').value;
+
+            const serviceObj = { id: id || String(Date.now()), slug, title, icon, description, benefits, price, banner_image, before_image, after_image, faqs };
+
+            if (id) {
+                // Update
+                const idx = dbState.services.findIndex(s => s.id === id);
+                dbState.services[idx] = serviceObj;
+            } else {
+                // Add
+                dbState.services.push(serviceObj);
+            }
+
+            await saveStateConfig('SERVICE SAVED AND SEO PAGES GENERATED.');
+            closeServiceForm();
+        }
+
+        async function deleteService(id) {
+            if (confirm('Are you sure you want to delete this parlor service?')) {
+                dbState.services = dbState.services.filter(s => s.id !== id);
+                await saveStateConfig('SERVICE REMOVED SUCCESSFULLY.');
+            }
+        }
+
+        // ================= GALLERY WORKFLOWS =================
+
+        function renderGalleryTable() {
+            const tbody = document.getElementById('gallery-table-body');
+            tbody.innerHTML = dbState.gallery.map(g => `
+                <tr>
+                    <td><img src="${g.image_url}" style="height:60px; width:100px; object-fit:cover; border:1px solid var(--glass-border)"></td>
+                    <td style="font-family:'Syne'; font-weight:800;">${g.title}</td>
+                    <td><span class="badge" style="background:#111; color:var(--gold); border:1px solid var(--glass-border);">${g.category.toUpperCase()}</span></td>
+                    <td>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="editGalleryItem('${g.id}')" class="btn-action btn-accept">EDIT</button>
+                            <button onclick="deleteGalleryItem('${g.id}')" class="btn-action btn-delete">DELETE</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openGalleryForm() {
+            document.getElementById('gallery-id').value = '';
+            document.getElementById('gallery-title').value = '';
+            document.getElementById('gallery-category').value = 'bridal';
+            document.getElementById('gallery-photo-val').value = '';
+            document.getElementById('gallery-photo-preview').style.display = 'none';
+            document.getElementById('gallery-form-container').style.display = 'block';
+        }
+
+        function closeGalleryForm() {
+            document.getElementById('gallery-form-container').style.display = 'none';
+        }
+
+        function editGalleryItem(id) {
+            const g = dbState.gallery.find(item => item.id === id);
+            if (!g) return;
+
+            document.getElementById('gallery-id').value = g.id;
+            document.getElementById('gallery-title').value = g.title;
+            document.getElementById('gallery-category').value = g.category;
+            document.getElementById('gallery-photo-val').value = g.image_url;
+
+            const preview = document.getElementById('gallery-photo-preview');
+            if (g.image_url) { preview.src = g.image_url; preview.style.display = 'block'; }
+            else { preview.style.display = 'none'; }
+
+            document.getElementById('gallery-form-container').style.display = 'block';
+        }
+
+        async function saveGalleryItem(event) {
+            event.preventDefault();
+            const id = document.getElementById('gallery-id').value;
+            const title = document.getElementById('gallery-title').value;
+            const category = document.getElementById('gallery-category').value;
+            const image_url = document.getElementById('gallery-photo-val').value;
+
+            const photoObj = { id: id || String(Date.now()), image_url, title, category };
+
+            if (id) {
+                const idx = dbState.gallery.findIndex(g => g.id === id);
+                dbState.gallery[idx] = photoObj;
+            } else {
+                dbState.gallery.push(photoObj);
+            }
+
+            await saveStateConfig('GALLERY COMPILATION UPDATED.');
+            closeGalleryForm();
+        }
+
+        async function deleteGalleryItem(id) {
+            if (confirm('Delete this photo from dynamic systems?')) {
+                dbState.gallery = dbState.gallery.filter(g => g.id !== id);
+                await saveStateConfig('GALLERY PHOTO DELETED.');
+            }
+        }
+
+        // ================= TESTIMONIALS & TEAM ACTIONS =================
+
+        function renderTestimonialsTable() {
+            const tbody = document.getElementById('testimonials-table-body');
+            tbody.innerHTML = dbState.testimonials.map(t => `
+                <tr>
+                    <td style="font-family:'Syne'; font-weight:800;">${t.name}</td>
+                    <td class="gold-text">${t.role}</td>
+                    <td>${t.rating} Stars</td>
+                    <td style="font-size:12px; max-width:250px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${t.review}</td>
+                    <td>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="editTestimonial('${t.id}')" class="btn-action btn-accept">EDIT</button>
+                            <button onclick="deleteTestimonial('${t.id}')" class="btn-action btn-delete">DELETE</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openTestimonialForm() {
+            document.getElementById('test-id').value = '';
+            document.getElementById('test-name').value = '';
+            document.getElementById('test-role').value = '';
+            document.getElementById('test-rating').value = '5';
+            document.getElementById('test-review').value = '';
+            document.getElementById('testimonial-form-container').style.display = 'block';
+        }
+
+        function closeTestimonialForm() {
+            document.getElementById('testimonial-form-container').style.display = 'none';
+        }
+
+        function editTestimonial(id) {
+            const t = dbState.testimonials.find(te => te.id === id);
+            if (!t) return;
+            document.getElementById('test-id').value = t.id;
+            document.getElementById('test-name').value = t.name;
+            document.getElementById('test-role').value = t.role;
+            document.getElementById('test-rating').value = t.rating;
+            document.getElementById('test-review').value = t.review;
+            document.getElementById('testimonial-form-container').style.display = 'block';
+        }
+
+        async function saveTestimonial(event) {
+            event.preventDefault();
+            const id = document.getElementById('test-id').value;
+            const name = document.getElementById('test-name').value;
+            const role = document.getElementById('test-role').value;
+            const rating = Number(document.getElementById('test-rating').value);
+            const review = document.getElementById('test-review').value;
+
+            const obj = { id: id || String(Date.now()), name, role, rating, review };
+            if (id) {
+                const idx = dbState.testimonials.findIndex(t => t.id === id);
+                dbState.testimonials[idx] = obj;
+            } else {
+                dbState.testimonials.push(obj);
+            }
+            await saveStateConfig('CLIENT TESTIMONIAL SAVED.');
+            closeTestimonialForm();
+        }
+
+        async function deleteTestimonial(id) {
+            if (confirm('Delete review?')) {
+                dbState.testimonials = dbState.testimonials.filter(t => t.id !== id);
+                await saveStateConfig('TESTIMONIAL REMOVED.');
+            }
+        }
+
+        // TEAM ACTIONS
+        function renderTeamTable() {
+            const tbody = document.getElementById('team-table-body');
+            tbody.innerHTML = dbState.team.map(t => `
+                <tr>
+                    <td><img src="${t.image_url}" style="height:50px; width:50px; border-radius:50%; object-fit:cover;"></td>
+                    <td style="font-family:'Syne'; font-weight:800;">${t.name}</td>
+                    <td class="gold-text">${t.role}</td>
+                    <td>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="editTeamMember('${t.id}')" class="btn-action btn-accept">EDIT</button>
+                            <button onclick="deleteTeamMember('${t.id}')" class="btn-action btn-delete">DELETE</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openTeamForm() {
+            document.getElementById('team-id').value = '';
+            document.getElementById('team-name').value = '';
+            document.getElementById('team-role').value = '';
+            document.getElementById('team-image-val').value = '';
+            document.getElementById('team-image-preview').style.display = 'none';
+            document.getElementById('team-form-container').style.display = 'block';
+        }
+
+        function closeTeamForm() {
+            document.getElementById('team-form-container').style.display = 'none';
+        }
+
+        function editTeamMember(id) {
+            const t = dbState.team.find(te => te.id === id);
+            if (!t) return;
+            document.getElementById('team-id').value = t.id;
+            document.getElementById('team-name').value = t.name;
+            document.getElementById('team-role').value = t.role;
+            document.getElementById('team-image-val').value = t.image_url;
+
+            const prev = document.getElementById('team-image-preview');
+            if (t.image_url) { prev.src = t.image_url; prev.style.display = 'block'; }
+            else { prev.style.display = 'none'; }
+
+            document.getElementById('team-form-container').style.display = 'block';
+        }
+
+        async function saveTeamMember(event) {
+            event.preventDefault();
+            const id = document.getElementById('team-id').value;
+            const name = document.getElementById('team-name').value;
+            const role = document.getElementById('team-role').value;
+            const image_url = document.getElementById('team-image-val').value;
+
+            const obj = { id: id || String(Date.now()), name, role, image_url };
+            if (id) {
+                const idx = dbState.team.findIndex(te => te.id === id);
+                dbState.team[idx] = obj;
+            } else {
+                dbState.team.push(obj);
+            }
+            await saveStateConfig('TEAM EXPERT PROFILE UPDATED.');
+            closeTeamForm();
+        }
+
+        async function deleteTeamMember(id) {
+            if (confirm('Delete expert profile?')) {
+                dbState.team = dbState.team.filter(t => t.id !== id);
+                await saveStateConfig('TEAM EXPERT DELETED.');
+            }
+        }
+
+        // ================= FAQS & BLOGS SYSTEMS =================
+
+        function renderFAQsTable() {
+            const tbody = document.getElementById('faqs-table-body');
+            tbody.innerHTML = dbState.faqs.map(f => `
+                <tr>
+                    <td style="font-family:'Syne'; font-weight:800; max-width:200px;">${f.question}</td>
+                    <td style="font-size:12px; color:var(--text-soft);">${f.answer}</td>
+                    <td>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="editFAQ('${f.id}')" class="btn-action btn-accept">EDIT</button>
+                            <button onclick="deleteFAQ('${f.id}')" class="btn-action btn-delete">DELETE</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openFAQForm() {
+            document.getElementById('faq-id').value = '';
+            document.getElementById('faq-question').value = '';
+            document.getElementById('faq-answer').value = '';
+            document.getElementById('faq-form-container').style.display = 'block';
+        }
+
+        function closeFAQForm() {
+            document.getElementById('faq-form-container').style.display = 'none';
+        }
+
+        function editFAQ(id) {
+            const f = dbState.faqs.find(fa => fa.id === id);
+            if (!f) return;
+            document.getElementById('faq-id').value = f.id;
+            document.getElementById('faq-question').value = f.question;
+            document.getElementById('faq-answer').value = f.answer;
+            document.getElementById('faq-form-container').style.display = 'block';
+        }
+
+        async function saveFAQ(event) {
+            event.preventDefault();
+            const id = document.getElementById('faq-id').value;
+            const question = document.getElementById('faq-question').value;
+            const answer = document.getElementById('faq-answer').value;
+
+            const obj = { id: id || String(Date.now()), question, answer };
+            if (id) {
+                const idx = dbState.faqs.findIndex(f => f.id === id);
+                dbState.faqs[idx] = obj;
+            } else {
+                dbState.faqs.push(obj);
+            }
+            await saveStateConfig('FAQ STATE UPDATED.');
+            closeFAQForm();
+        }
+
+        async function deleteFAQ(id) {
+            if (confirm('Delete FAQ item?')) {
+                dbState.faqs = dbState.faqs.filter(f => f.id !== id);
+                await saveStateConfig('FAQ REMOVED.');
+            }
+        }
+
+        // BLOGS SYSTEMS
+        function renderBlogsTable() {
+            const tbody = document.getElementById('blogs-table-body');
+            tbody.innerHTML = dbState.blogs.map(b => `
+                <tr>
+                    <td><img src="${b.image_url}" style="height:40px; width:60px; object-fit:cover;"></td>
+                    <td style="font-family:'Syne'; font-weight:800;">${b.title}</td>
+                    <td>/blogs/${b.slug}</td>
+                    <td>${b.date}</td>
+                    <td>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="editBlogPost('${b.id}')" class="btn-action btn-accept">EDIT</button>
+                            <button onclick="deleteBlogPost('${b.id}')" class="btn-action btn-delete">DELETE</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openBlogForm() {
+            document.getElementById('blog-id').value = '';
+            document.getElementById('blog-title').value = '';
+            document.getElementById('blog-slug').value = '';
+            document.getElementById('blog-content').value = '';
+            document.getElementById('blog-image-val').value = '';
+            document.getElementById('blog-image-preview').style.display = 'none';
+            document.getElementById('blog-form-container').style.display = 'block';
+        }
+
+        function closeBlogForm() {
+            document.getElementById('blog-form-container').style.display = 'none';
+        }
+
+        function editBlogPost(id) {
+            const b = dbState.blogs.find(bl => bl.id === id);
+            if (!b) return;
+            document.getElementById('blog-id').value = b.id;
+            document.getElementById('blog-title').value = b.title;
+            document.getElementById('blog-slug').value = b.slug;
+            document.getElementById('blog-content').value = b.content;
+            document.getElementById('blog-image-val').value = b.image_url;
+
+            const prev = document.getElementById('blog-image-preview');
+            if (b.image_url) { prev.src = b.image_url; prev.style.display = 'block'; }
+            else { prev.style.display = 'none'; }
+
+            document.getElementById('blog-form-container').style.display = 'block';
+        }
+
+        async function saveBlogPost(event) {
+            event.preventDefault();
+            const id = document.getElementById('blog-id').value;
+            const title = document.getElementById('blog-title').value;
+            const slug = document.getElementById('blog-slug').value;
+            const content = document.getElementById('blog-content').value;
+            const image_url = document.getElementById('blog-image-val').value;
+
+            const obj = { id: id || String(Date.now()), title, slug, content, image_url, date: new Date().toISOString().split('T')[0] };
+            if (id) {
+                const idx = dbState.blogs.findIndex(b => b.id === id);
+                dbState.blogs[idx] = obj;
+            } else {
+                dbState.blogs.push(obj);
+            }
+            await saveStateConfig('BLOG ARTICLE POSTED.');
+            closeBlogForm();
+        }
+
+        async function deleteBlogPost(id) {
+            if (confirm('Delete article?')) {
+                dbState.blogs = dbState.blogs.filter(b => b.id !== id);
+                await saveStateConfig('ARTICLE REMOVED.');
+            }
+        }
+
+        // ================= PACKAGES SYSTEMS =================
+
+        function renderPricingTable() {
+            const tbody = document.getElementById('pricing-table-body');
+            tbody.innerHTML = dbState.pricing.map(p => `
+                <tr>
+                    <td style="font-family:'Syne'; font-weight:800;">${p.name}</td>
+                    <td class="gold-text">${p.price}</td>
+                    <td>${p.popular ? '<span class="badge badge-pending">GOLD GLOW</span>' : 'STANDARD'}</td>
+                    <td style="font-size:12px;">${p.features ? p.features.join(', ') : ''}</td>
+                    <td>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="editPricingPackage('${p.id}')" class="btn-action btn-accept">EDIT</button>
+                            <button onclick="deletePricingPackage('${p.id}')" class="btn-action btn-delete">DELETE</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openPricingForm() {
+            document.getElementById('pricing-id').value = '';
+            document.getElementById('pricing-name').value = '';
+            document.getElementById('pricing-val').value = '';
+            document.getElementById('pricing-popular').value = 'false';
+            document.getElementById('pricing-features').value = '';
+            document.getElementById('pricing-form-container').style.display = 'block';
+        }
+
+        function closePricingForm() {
+            document.getElementById('pricing-form-container').style.display = 'none';
+        }
+
+        function editPricingPackage(id) {
+            const p = dbState.pricing.find(pr => pr.id === id);
+            if (!p) return;
+            document.getElementById('pricing-id').value = p.id;
+            document.getElementById('pricing-name').value = p.name;
+            document.getElementById('pricing-val').value = p.price;
+            document.getElementById('pricing-popular').value = String(p.popular);
+            document.getElementById('pricing-features').value = p.features ? p.features.join('\n') : '';
+            document.getElementById('pricing-form-container').style.display = 'block';
+        }
+
+        async function savePricingPackage(event) {
+            event.preventDefault();
+            const id = document.getElementById('pricing-id').value;
+            const name = document.getElementById('pricing-name').value;
+            const price = document.getElementById('pricing-val').value;
+            const popular = document.getElementById('pricing-popular').value === 'true';
+            const features = document.getElementById('pricing-features').value.split('\n').map(f => f.trim()).filter(f => f.length > 0);
+
+            const obj = { id: id || String(Date.now()), name, price, popular, features };
+            if (id) {
+                const idx = dbState.pricing.findIndex(p => p.id === id);
+                dbState.pricing[idx] = obj;
+            } else {
+                dbState.pricing.push(obj);
+            }
+            await saveStateConfig('PRICING PACKAGE TIERS SAVED.');
+            closePricingForm();
+        }
+
+        async function deletePricingPackage(id) {
+            if (confirm('Delete package tier?')) {
+                dbState.pricing = dbState.pricing.filter(p => p.id !== id);
+                await saveStateConfig('PACKAGE TIER REMOVED.');
+            }
+        }
+
+        // ================= SYSTEM DYNAMIC CONFIGURATIONS =================
+
+        function renderSystemConfigsForm() {
+            if (!dbState.configs) {
+                dbState.configs = {
+                    smtp: {
+                        host: 'smtp.gmail.com',
+                        port: 587,
+                        secure: false,
+                        user: '',
+                        pass: '',
+                        fromName: 'VICKY PARLOUR',
+                        fromEmail: ''
+                    },
+                    firebase: {
+                        projectId: '',
+                        clientEmail: '',
+                        privateKey: ''
+                    }
+                };
+            }
+
+            const smtp = dbState.configs.smtp || {};
+            document.getElementById('smtp-host').value = smtp.host || 'smtp.gmail.com';
+            document.getElementById('smtp-port').value = smtp.port || '587';
+            document.getElementById('smtp-secure').value = String(smtp.secure || 'false');
+            document.getElementById('smtp-user').value = smtp.user || '';
+            document.getElementById('smtp-pass').value = smtp.pass || '';
+            document.getElementById('smtp-from-name').value = smtp.fromName || 'VICKY PARLOUR';
+            document.getElementById('smtp-from-email').value = smtp.fromEmail || '';
+
+            const fb = dbState.configs.firebase || {};
+            document.getElementById('fb-project-id').value = fb.projectId || '';
+            document.getElementById('fb-client-email').value = fb.clientEmail || '';
+            document.getElementById('fb-private-key').value = fb.privateKey || '';
+        }
+
+        async function saveSystemConfigs(event) {
+            event.preventDefault();
+            dbState.configs = dbState.configs || {};
+
+            dbState.configs.smtp = {
+                host: document.getElementById('smtp-host').value,
+                port: parseInt(document.getElementById('smtp-port').value) || 587,
+                secure: document.getElementById('smtp-secure').value === 'true',
+                user: document.getElementById('smtp-user').value,
+                pass: document.getElementById('smtp-pass').value,
+                fromName: document.getElementById('smtp-from-name').value,
+                fromEmail: document.getElementById('smtp-from-email').value
+            };
+
+            dbState.configs.firebase = {
+                projectId: document.getElementById('fb-project-id').value,
+                clientEmail: document.getElementById('fb-client-email').value,
+                privateKey: document.getElementById('fb-private-key').value
+            };
+
+            await saveStateConfig('SYSTEM CONFIGURATIONS SAVED SUCCESSFULLY.');
+        }
+
+        // ================= SECURE JSON BACKUP RESTORES =================
+
+        function restoreBackup(inputEl) {
+            const file = inputEl.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.readAsText(file, 'UTF-8');
+            reader.onload = async function (evt) {
+                try {
+                    const parsedData = JSON.parse(evt.target.result);
+                    if (!parsedData.services || !parsedData.hero || !parsedData.contact) {
+                        throw new Error('Database schema invalid');
+                    }
+
+                    const response = await fetch('/api/admin/restore', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ backupData: parsedData })
+                    });
+
+                    if (response.ok) {
+                        triggerToast('RESTORED SNAPSHOT SUCCESSFULLY.');
+                        fetchAdminData();
+                    } else {
+                        throw new Error();
+                    }
+                } catch (err) {
+                    alert('Invalid JSON structure. Please upload a authentic Vicky Parlour backup file.');
+                }
+            }
+        }
+
+        // Unified save handler to write settings back to active server databases
+        async function saveStateConfig(toastMessage) {
+            try {
+                const response = await fetch('/api/admin/data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dbState)
+                });
+                if (response.ok) {
+                    triggerToast(toastMessage || 'SYSTEM DETAILS SAVED SUCCESSFULLY.');
+                    fetchAdminData();
+                } else {
+                    throw new Error('Server error');
+                }
+            } catch (e) {
+                triggerToast('FAILED TO POST SYSTEM CONFIGURATIONS.');
+            }
+        }
+
+        // ================= ACCOUNT & SECURITY MANAGEMENT Handlers =================
+
+        function renderAccountSecurityForm() {
+            if (!dbState.admin) return;
+
+            document.getElementById('admin-username-input').value = dbState.admin.username || '';
+            document.getElementById('admin-email-input').value = dbState.admin.recoveryEmail || '';
+            document.getElementById('admin-protection-input').value = dbState.admin.authProtection ? 'true' : 'false';
+
+            const sessionsBody = document.getElementById('active-sessions-body');
+            const sessions = dbState.admin.sessions || [];
+            if (sessions.length === 0) {
+                sessionsBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-soft); font-size:11px;">NO ACTIVE SESSIONS.</td></tr>`;
+            } else {
+                sessionsBody.innerHTML = sessions.map(s => {
+                    const currentBadge = s.isCurrent ? '<span style="background: #28a745; color: #fff; padding: 2px 8px; font-size: 9px; font-weight: 800; border-radius: 3px; margin-left: 5px;">CURRENT</span>' : '';
+                    const dateStr = new Date(s.created).toLocaleString();
+                    const expiresStr = new Date(s.expiresAt).toLocaleString();
+                    return `
+                        <tr>
+                            <td style="color:#fff; font-size: 11px; padding: 10px;">${s.ip} ${currentBadge}</td>
+                            <td style="color:var(--text-soft); font-size: 11px; padding: 10px;">${dateStr}</td>
+                            <td style="color:var(--text-soft); font-size: 11px; padding: 10px;">${expiresStr}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            const logsBody = document.getElementById('login-logs-body');
+            const logs = dbState.admin.loginActivity || [];
+            if (logs.length === 0) {
+                logsBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-soft); font-size:11px;">NO RECENT LOGIN ATTEMPTS.</td></tr>`;
+            } else {
+                logsBody.innerHTML = logs.map(l => {
+                    const statusText = l.success ? '<span style="color:#28a745; font-weight:bold;">SUCCESS</span>' : '<span style="color:#dc3545; font-weight:bold;">FAILED</span>';
+                    const dateStr = new Date(l.timestamp).toLocaleString();
+                    return `
+                        <tr>
+                            <td style="color:#fff; font-size: 11px; padding: 10px;">${dateStr}</td>
+                            <td style="color:var(--text-soft); font-size: 11px; padding: 10px;">${l.ip}</td>
+                            <td style="font-size: 11px; padding: 10px;">${statusText}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        async function saveAccountSettings(event) {
+            event.preventDefault();
+            const username = document.getElementById('admin-username-input').value.trim();
+            const recoveryEmail = document.getElementById('admin-email-input').value.trim();
+
+            if (username.length < 3) {
+                alert('Username must be at least 3 characters long.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/admin/account-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, recoveryEmail })
+                });
+
+                if (response.ok) {
+                    triggerToast('ACCOUNT PROFILE SETTINGS UPDATED.');
+                    fetchAdminData();
+                } else {
+                    const err = await response.json();
+                    alert(err.error || 'Failed to update account profile.');
+                }
+            } catch (e) {
+                alert('Connection error. Failed to save account profile.');
+            }
+        }
+
+        async function saveSecuritySettings(event) {
+            event.preventDefault();
+            const authProtection = document.getElementById('admin-protection-input').value === 'true';
+
+            try {
+                const response = await fetch('/api/admin/security-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ authProtection })
+                });
+
+                if (response.ok) {
+                    triggerToast('SECURITY PROTECTION SETTINGS SAVED.');
+                    fetchAdminData();
+                } else {
+                    alert('Failed to update security settings.');
+                }
+            } catch (e) {
+                alert('Connection error. Failed to save security settings.');
+            }
+        }
+
+        async function updatePassword(event) {
+            event.preventDefault();
+            const currentPassword = document.getElementById('admin-current-password').value;
+            const newPassword = document.getElementById('admin-new-password').value;
+            const confirmPassword = document.getElementById('admin-confirm-password').value;
+
+            if (newPassword.length < 5) {
+                alert('New password must be at least 5 characters long.');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/admin/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    triggerToast('PASSWORD UPDATED SECURELY.');
+                    document.getElementById('admin-current-password').value = '';
+                    document.getElementById('admin-new-password').value = '';
+                    document.getElementById('admin-confirm-password').value = '';
+                    fetchAdminData();
+                } else {
+                    alert(result.error || 'Failed to change password.');
+                }
+            } catch (e) {
+                alert('Connection error. Failed to update password.');
+            }
+        }
+
+        async function logoutAllSessions() {
+            if (!confirm('Are you sure you want to revoke ALL active login sessions? You will be logged out from this browser too.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/admin/logout-all', {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    window.location.href = '/index.html';
+                } else {
+                    alert('Failed to terminate sessions.');
+                }
+            } catch (e) {
+                alert('Connection error. Failed to revoke sessions.');
+            }
+        }
+
+        // Run validation verification on load
+        verifyAuthentication();
+    </script>
+</body>
+
+</html>

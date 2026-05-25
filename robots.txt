@@ -1,0 +1,9 @@
+# Robots.txt for Vicky Parlour Salon & Academy
+
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /api/admin/
+
+# Link to sitemap
+Sitemap: https://vickyparlour.com/sitemap.xml
