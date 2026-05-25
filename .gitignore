@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Local databases and states
+database.json
+
+# User uploads and generated PDFs
+uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
