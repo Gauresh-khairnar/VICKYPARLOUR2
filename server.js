@@ -1319,7 +1319,11 @@ app.post('/api/admin/restore', checkAdminAuth, (req, res) => {
 });
 
 // Start up dynamic hybrid Firebase database connection on startup
-initFirebase();
+try {
+    initFirebase();
+} catch (e) {
+    console.warn('[Firebase] Init skipped in serverless mode:', e.message);
+}
 
 // Listen on server PORT (only if not on serverless environment like Vercel)
 if (!process.env.VERCEL) {
