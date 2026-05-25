@@ -6,7 +6,10 @@ const path = require('path');
 const PDFDocument = require('pdfkit');
 // firebase-admin will be required lazily inside initFirebase when needed
 const crypto = require('crypto');
-
+// Global unhandled promise rejection handler to prevent serverless crashes
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('[UnhandledRejection]', reason);
+});
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -152,7 +155,7 @@ async function initFirebase() {
         return;
     }
     try {
-        // If a Firebase app is already initialized, clean it up
+        // Clean up any existing Firebase app
         if (admin.apps && admin.apps.length > 0) {
             await admin.app().delete();
             isFirebaseConnected = false;
