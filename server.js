@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 const PDFDocument = require('pdfkit');
-const admin = require('firebase-admin');
+// firebase-admin will be required lazily inside initFirebase when needed
 const crypto = require('crypto');
 
 const app = express();
@@ -143,17 +143,25 @@ let dbFirestore = null;
 let isFirebaseConnected = false;
 
 async function initFirebase() {
+    // Lazy‑load firebase-admin only when needed
+    let admin;
     try {
-        if (admin.apps.length > 0) {
-            return;
+        admin = require('firebase-admin');
+    } catch (e) {
+        console.warn('[Firebase] firebase-admin not available – skipping Firebase init');
+        return;
+    }
+    try {
+        // If a Firebase app is already initialized, clean it up
+        if (admin.apps && admin.apps.length > 0) {
+            await admin.app().delete();
+            isFirebaseConnected = false;
+            dbFirestore = null;
         }
-
         const db = getDB();
         const fbConfig = db.configs && db.configs.firebase;
-        
         if (fbConfig && fbConfig.projectId && fbConfig.clientEmail && fbConfig.privateKey) {
             const privateKey = fbConfig.privateKey.replace(/\\n/g, '\n');
-            
             admin.initializeApp({
                 credential: admin.credential.cert({
                     projectId: fbConfig.projectId,
@@ -161,14 +169,15 @@ async function initFirebase() {
                     privateKey: privateKey
                 })
             });
-            
             dbFirestore = admin.firestore();
             isFirebaseConnected = true;
             console.log(`[Firebase] Successfully connected to Firestore project: ${fbConfig.projectId}`);
             syncFromFirestore();
+        } else {
+            console.log('[Firebase] Configuration inactive or incomplete – using local JSON DB');
         }
     } catch (err) {
-        console.error('[Firebase] Failed to initialize:', err.message);
+        console.error('[Firebase] Failed to initialize Firebase:', err.message);
     }
 }
 
@@ -1319,11 +1328,9 @@ app.post('/api/admin/restore', checkAdminAuth, (req, res) => {
 });
 
 // Start up dynamic hybrid Firebase database connection on startup
-try {
-    initFirebase();
-} catch (e) {
+initFirebase().catch(e => {
     console.warn('[Firebase] Init skipped in serverless mode:', e.message);
-}
+});
 
 // Listen on server PORT (only if not on serverless environment like Vercel)
 if (!process.env.VERCEL) {
