@@ -61,8 +61,8 @@ if (!fs.existsSync(INVOICES_DIR)) {
 }
 app.use('/uploads/invoices', express.static(INVOICES_DIR));
 
-// Serve other static files from workspace root
-app.use(express.static(__dirname));
+// Serve other static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Database File Path
 const DB_FILE = path.join(__dirname, 'database.json');
