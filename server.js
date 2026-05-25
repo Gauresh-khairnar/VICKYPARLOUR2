@@ -10,6 +10,19 @@ const crypto = require('crypto');
 process.on('unhandledRejection', (reason, promise) => {
     console.error('[UnhandledRejection]', reason);
 });
+// Global uncaught exception handler for unexpected errors
+process.on('uncaughtException', err => {
+    console.error('[UncaughtException]', err);
+});
+// Validate required environment variables (Firebase & SMTP)
+function validateEnv() {
+    const required = ['FIREBASE_PROJECT_ID', 'FIREBASE_CLIENT_EMAIL', 'FIREBASE_PRIVATE_KEY', 'SMTP_USER', 'SMTP_PASS'];
+    const missing = required.filter(v => !process.env[v]);
+    if (missing.length) {
+        console.warn('[Env] Missing env vars:', missing.join(', '));
+    }
+}
+validateEnv();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -670,7 +683,7 @@ app.post('/api/book', async (req, res) => {
                 <p style="color: #555555; font-size: 9px; margin-top: 40px;">&copy; 2026 VICKY PARLOUR SALON ACADEMY. ALL RIGHTS RESERVED.</p>
             </div>
             `;
-            sendEmailNotification(email, `Appointment Booked Successfully - Vicky Parlour`, clientHtml).catch(() => {});
+            sendEmailNotification(email, `Appointment Booked Successfully - Vicky Parlour`, clientHtml).catch(err => console.error('[Email] Client send failed:', err));
         }
 
         // Notify Admin Email
@@ -721,7 +734,7 @@ app.post('/api/book', async (req, res) => {
                 <p style="color: #555555; font-size: 9px; margin-top: 40px;">&copy; 2026 VICKY PARLOUR SALON ACADEMY. ALL RIGHTS RESERVED.</p>
             </div>
             `;
-            sendEmailNotification(adminEmail, `ALERT: New Appointment VP Booking Received ${bookingId}`, adminHtml).catch(() => {});
+            sendEmailNotification(adminEmail, `ALERT: New Appointment VP Booking Received ${bookingId}`, adminHtml).catch(err => console.error('[Email] Admin send failed:', err));
         }
 
         res.json({ success: true, bookingId });
@@ -1120,7 +1133,12 @@ app.post('/api/admin/bookings/:id/collect-payment', checkAdminAuth, async (req, 
         const localPath = path.join(INVOICES_DIR, filename);
 
         // Compile professional A4 PDF invoice
-        await createInvoicePDF(booking, invoiceNum, amountPaid, localPath);
+        try {
+    await createInvoicePDF(booking, invoiceNum, amountPaid, localPath);
+} catch (err) {
+    console.error('[Invoice] PDF generation failed:', err);
+    // Continue without PDF attachment
+}
 
         // Save Invoice Metadata
         const newInvoice = {
@@ -1141,9 +1159,9 @@ app.post('/api/admin/bookings/:id/collect-payment', checkAdminAuth, async (req, 
         saveDB(db);
 
         // Firebase Firestore Sync
-        if (isFirebaseConnected && dbFirestore) {
-            dbFirestore.collection('bookings').doc(booking.id).set(booking).catch(() => {});
-            dbFirestore.collection('invoices').doc(invoiceNum).set(newInvoice).catch(() => {});
+        if (isFirebaseConnected && dbFirestore) { // Ensure Firebase config is valid before sync
+            dbFirestore.collection('bookings').doc(booking.id).set(booking).catch(err => console.error('[Firestore] booking set error:', err));
+            dbFirestore.collection('invoices').doc(invoiceNum).set(newInvoice).catch(err => console.error('[Firestore] invoice set error:', err));
         }
 
         console.log(`[Invoice] Generated ${invoiceNum} for booking ${booking.id}`);
@@ -1331,9 +1349,11 @@ app.post('/api/admin/restore', checkAdminAuth, (req, res) => {
 });
 
 // Start up dynamic hybrid Firebase database connection on startup
-initFirebase().catch(e => {
-    console.warn('[Firebase] Init skipped in serverless mode:', e.message);
-});
+if (!process.env.VERCEL) {
+    initFirebase().catch(e => {
+        console.warn('[Firebase] Init skipped in non‑serverless mode:', e.message);
+    });
+}
 
 // Listen on server PORT (only if not on serverless environment like Vercel)
 if (!process.env.VERCEL) {
