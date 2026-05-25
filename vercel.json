@@ -1,19 +1,25 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
+  "functions": {
+    "server.js": {
+      "includeFiles": [
+        "database.json",
+        "service_detail_template.html"
+      ]
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "server.js"
+      "source": "/api/:path*",
+      "destination": "/server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/services/:path*",
+      "destination": "/server.js"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "/server.js"
     }
   ]
 }
