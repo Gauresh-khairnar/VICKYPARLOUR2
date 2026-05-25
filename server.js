@@ -145,16 +145,13 @@ let isFirebaseConnected = false;
 async function initFirebase() {
     try {
         if (admin.apps.length > 0) {
-            await admin.app().delete();
-            isFirebaseConnected = false;
-            dbFirestore = null;
+            return;
         }
 
         const db = getDB();
         const fbConfig = db.configs && db.configs.firebase;
         
         if (fbConfig && fbConfig.projectId && fbConfig.clientEmail && fbConfig.privateKey) {
-            // Setup Firebase Admin with private key certificate
             const privateKey = fbConfig.privateKey.replace(/\\n/g, '\n');
             
             admin.initializeApp({
@@ -168,14 +165,10 @@ async function initFirebase() {
             dbFirestore = admin.firestore();
             isFirebaseConnected = true;
             console.log(`[Firebase] Successfully connected to Firestore project: ${fbConfig.projectId}`);
-            
-            // Trigger background synchronization
             syncFromFirestore();
-        } else {
-            console.log('[Firebase] Configuration inactive or incomplete. Operating in portable local JSON mode.');
         }
     } catch (err) {
-        console.error('[Firebase] Failed to initialize Firebase connection:', err.message);
+        console.error('[Firebase] Failed to initialize:', err.message);
     }
 }
 
