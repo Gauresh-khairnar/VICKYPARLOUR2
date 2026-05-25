@@ -83,14 +83,22 @@ function getDB() {
             sessions: [],
             loginActivity: []
         };
-        fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), 'utf8');
+        try {
+            fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), 'utf8');
+        } catch (err) {
+            console.warn('[DB] Failed to seed admin account to disk:', err.message);
+        }
     }
     return db;
 }
 
 // Save DB state
 function saveDB(data) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf8');
+    try {
+        fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf8');
+    } catch (err) {
+        console.warn('[DB] Failed to save database to disk:', err.message);
+    }
 }
 
 // ================= HYBRID FIREBASE AND SMTP EMAIL ENGINES =================
@@ -986,7 +994,12 @@ app.post('/api/admin/upload', checkAdminAuth, (req, res) => {
         const uniqueName = `vp_media_${Date.now()}${safeExt}`;
         const outputFilePath = path.join(UPLOADS_DIR, uniqueName);
 
-        fs.writeFileSync(outputFilePath, fileBuffer);
+        try {
+            fs.writeFileSync(outputFilePath, fileBuffer);
+        } catch (err) {
+            console.error('[Upload] Failed to write media file to disk:', err.message);
+            return res.status(500).json({ error: 'Uploads are not supported on serverless platforms unless Firebase connection is enabled.' });
+        }
         res.json({ success: true, filepath: `/uploads/${uniqueName}` });
     } catch (err) {
         console.error(err);
@@ -1275,13 +1288,18 @@ app.post('/api/admin/restore', checkAdminAuth, (req, res) => {
     }
 });
 
-// Listen on server PORT
-app.listen(PORT, () => {
-    // Start up dynamic hybrid Firebase database connection
-    initFirebase();
+// Start up dynamic hybrid Firebase database connection on startup
+initFirebase();
 
-    console.log(`=======================================================`);
-    console.log(`  Vicky Parlour bold multiverse running on port ${PORT}`);
-    console.log(`  Control dashboard available at: http://localhost:${PORT}/admin.html`);
-    console.log(`=======================================================`);
-});
+// Listen on server PORT (only if not on serverless environment like Vercel)
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`=======================================================`);
+        console.log(`  Vicky Parlour bold multiverse running on port ${PORT}`);
+        console.log(`  Control dashboard available at: http://localhost:${PORT}/admin.html`);
+        console.log(`=======================================================`);
+    });
+}
+
+// Export Express app for Vercel Serverless Function entrypoint
+module.exports = app;
